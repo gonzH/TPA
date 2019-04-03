@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Netbeans/Dicionario/src/dicionario/RegDados.java</file>
-            <file>file:/E:/Netbeans/Dicionario/src/dicionario/Dicionario.java</file>
-            <file>file:/E:/Netbeans/Dicionario/src/dicionario/TADDicionario.java</file>
+            <file>file:/E:/GitDesktop/TPA/Dicionario/src/dicionario/TADDicionarioV2.java</file>
+            <file>file:/E:/GitDesktop/TPA/Dicionario/src/dicionario/Dicionario.java</file>
+            <file>file:/E:/GitDesktop/TPA/Dicionario/src/dicionario/RegDadosV1.java</file>
+            <file>file:/E:/GitDesktop/TPA/Dicionario/src/dicionario/TADDicionarioV1.java</file>
+            <file>file:/E:/GitDesktop/TPA/Dicionario/src/dicionario/TDicItem.java</file>
         </group>
     </open-files>
 </project-private>

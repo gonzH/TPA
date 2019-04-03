@@ -19,23 +19,27 @@ public class Dicionario {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        TADDicionario vet = new TADDicionario(10);
-        RegDados dado1 = new RegDados("Oi", "Hi");
-        RegDados dado2 = new RegDados("Hello", "Olá");
-        RegDados dado3 = new RegDados("Hey", "Olá");
+        TADDicionarioV1 vet = new TADDicionarioV1(4);
+        RegDadosV1 dado1 = new RegDadosV1("Oi", "Hi");
+        RegDadosV1 dado2 = new RegDadosV1("Olá", "Hello");
+        RegDadosV1 dado3 = new RegDadosV1("Olá", "Hey");
         vet.insertItem("Oi", dado1);
-        vet.insertItem("Hello", dado2);
-        vet.insertItem("Hey", dado3);
+        vet.insertItem("Olá", dado2);
+        vet.insertItem("Olá", dado3);
         
-        List saida = new LinkedList<RegDados>();
+        List saida = new LinkedList<RegDadosV1>();
         saida = vet.elements();
-        
+         
         for( Object i : saida) {
-            System.out.println(((RegDados)i).getPalPt() + ((RegDados)i).getPalEng());
+            System.out.println(((RegDadosV1)i).getPalPt() + ((RegDadosV1)i).getPalEng());
         }
         //System.out.println(saida);
         
+        LinkedList<String> saida1 = vet.keys();
         
+        saida1.forEach((i) -> {
+            System.out.println(i);
+        });
         
         
     }
