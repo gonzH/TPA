@@ -96,6 +96,19 @@ public class TADDicionarioV2 {
         }
     }
     
+    public int buscaDicItem(LinkedList<TDicItem> lst, String str) {
+        int posList = 0;
+        
+        while(posList < lst.size()) {
+            if(((TDicItem)(lst.get(posList))).getChave().equals(str)) {
+                return posList;
+            }
+            posList++;
+        }
+        
+        return -1;
+    }
+    
     public void insertItem(String chave, Object valor) {
         TDicItem aux = findElement(chave);
         
@@ -108,7 +121,9 @@ public class TADDicionarioV2 {
             qtd_entradas++;   
         }
         else {
-            aux.setValor(((TDicItem)(valor)).getValor());
+            //int pos = buscaDicItem(vetBuckets[indice], chave);
+            //vetBuckets[indice].get(pos);
+            aux.setValor(valor);
         } 
     }
     
