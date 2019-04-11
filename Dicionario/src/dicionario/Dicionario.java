@@ -5,6 +5,8 @@
  */
 package dicionario;
 
+import dicionario.v1.RegDadosV1;
+import dicionario.v1.TADDicionarioV1;
 import java.util.LinkedList;
 import java.util.List;
 

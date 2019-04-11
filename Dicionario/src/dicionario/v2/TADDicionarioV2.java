@@ -3,36 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dicionario;
+package dicionario.v2;
 
+import dicionario.V2.*;
 import java.util.*;
-import dicionario.RegDadosV1.*;
 import java.io.FileWriter;
 import java.io.IOException;
 /**
  *
  * @author helle
  */
-public class TADDicionarioV1 {
+public class TADDicionarioV2 {
     private LinkedList vetBuckets[] = null; //lista principal
     private double fator_de_carga = 0.75; 
     private int qtd_entradas = 0;
     
-    public TADDicionarioV1(int qtdEntradas) {
+    public TADDicionarioV2(int qtdEntradas) {
         int tam = (int)(qtdEntradas/fator_de_carga);
         
         vetBuckets = new LinkedList[tam];
         
         for( int i = 0; i < tam; i++) {
-            vetBuckets[i] = new LinkedList<String>();
+            vetBuckets[i] = new LinkedList<TDicItemV2>();
         }
     }
     
-    public TADDicionarioV1() {
+    public TADDicionarioV2() {
         vetBuckets = new LinkedList[100];
         
         for( int i = 0; i < 100; i++) {
-            vetBuckets[i] = new LinkedList<String>();
+            vetBuckets[i] = new LinkedList<TDicItemV2>();
         }
     }
     
@@ -78,8 +78,8 @@ public class TADDicionarioV1 {
         }
     }
     
-    public LinkedList<RegDadosV1> elements() {
-        LinkedList<RegDadosV1> iterador = new LinkedList<RegDadosV1>();
+    public LinkedList<TDicItemV2> elements() {
+        LinkedList<TDicItemV2> iterador = new LinkedList<TDicItemV2>();
         
         if(isEmpty()) {
             return iterador;
@@ -88,7 +88,7 @@ public class TADDicionarioV1 {
             for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
                 if(vetBuckets[posVet].size() > 0) {
                     for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
-                        iterador.add(((RegDadosV1)vetBuckets[posVet].get(posList)));
+                        iterador.add(((TDicItemV2)vetBuckets[posVet].get(posList)));
                     }
                 }
             }
@@ -97,40 +97,55 @@ public class TADDicionarioV1 {
         }
     }
     
-    public void insertItem(String chave, RegDadosV1 valor) {
-        RegDadosV1 aux = findElement(chave);
+    /*public int buscaDicItem(LinkedList<TDicItemV2> lst, String str) {
+        int posList = 0;
+        
+        while(posList < lst.size()) {
+            if(((TDicItemV2)(lst.get(posList))).getChave().equals(str)) {
+                return posList;
+            } else {
+            }
+            posList++;
+        }
+        
+        return -1;
+    }*/
+    
+    public void insertItem(String chave, Object valor) {
+        TDicItemV2 aux = findElement(chave);
         
         if(aux == null) {
             long cod_hash = hashFunc(chave);
             //garante que meu indice nunca seja maior que o tamanho do vetor
             int indice = (int)cod_hash % getSizeVetBuckets();
             
-            
-            vetBuckets[indice].add(valor);
+            vetBuckets[indice].add(new TDicItemV2(chave, valor));
             qtd_entradas++;   
         }
         else {
-            aux.setPalEng(valor.getPalEng());
+            //int pos = buscaDicItem(vetBuckets[indice], chave);
+            //vetBuckets[indice].get(pos);
+            aux.setValor(valor);
         } 
     }
     
-    public RegDadosV1 findElement(String chave) {
+    public TDicItemV2 findElement(String chave) {
         long cod_hash = hashFunc(chave);
         int indice = (int)cod_hash % getSizeVetBuckets();
         
         int posList = 0;
         while(posList < vetBuckets[indice].size()) {
-            if((((RegDadosV1)vetBuckets[indice].get(posList))).getPalPt().equalsIgnoreCase(chave))
-                return (RegDadosV1)vetBuckets[indice].get(posList);
-            posList++;
+            /*if((((TDicItemV2)vetBuckets[indice].get(posList))).getChave().equalsIgnoreCase(chave))
+                return (TDicItemV2)vetBuckets[indice].get(posList);
+            posList++;*/
         }
         
         return null;
     }
     
     /* enunciado pede para retornar regdados*/
-    public RegDadosV1 removeElement(String chave) {
-        RegDadosV1 aux = findElement(chave);
+    public TDicItemV2 removeElement(String chave) {
+        TDicItemV2 aux = findElement(chave);
         
         if(aux == null) {
             return null;
@@ -161,7 +176,7 @@ public class TADDicionarioV1 {
             for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
                 if(vetBuckets[posVet].size() > 0) {
                     for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
-                        iterador.add(((RegDadosV1)vetBuckets[posVet].get(posList)).getPalPt());
+                        iterador.add(((TDicItemV2)vetBuckets[posVet].get(posList)).getChave());
                     }
                 }
             }

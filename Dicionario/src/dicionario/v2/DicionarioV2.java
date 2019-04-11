@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dicionario;
+package dicionario.v2;
 
+import dicionario.v1.RegDadosV1;
+import dicionario.TDicItem;
 import java.util.LinkedList;
 import java.util.List;
 

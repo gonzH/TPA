@@ -3,22 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dicionario;
+package dicionario.v2;
 
 /**
  *
  * @author helle
  */
-public class TDicItem {
-    private Object chave;
+public class TDicItemV2 {
+    private String chave;
     private Object valor;
     
-    public TDicItem(Object chave, Object valor) {
+    public TDicItemV2(String chave, Object valor) {
         this.chave = chave;
         this.valor = valor;
     }
     
-    public Object getChave() {
+    public String getChave() {
         return chave;
     }
     
@@ -26,7 +26,7 @@ public class TDicItem {
         return valor;
     }
     
-    public void setChave(Object chave) {
+    public void setChave(String chave) {
         this.chave = chave;
     }
     
