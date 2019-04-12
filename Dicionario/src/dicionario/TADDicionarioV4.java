@@ -30,6 +30,13 @@ public class TADDicionarioV4 {
         for( int i = 0; i < tam; i++) {
             vetBuckets[i] = new LinkedList<TDicItem>();
         }
+        
+        if(he == null) {
+            he = new HashEngineDefault();
+        }
+        else {
+            this.he = he;
+        }
     }
     
     public TADDicionarioV4() {
@@ -37,6 +44,13 @@ public class TADDicionarioV4 {
         
         for( int i = 0; i < 100; i++) {
             vetBuckets[i] = new LinkedList<TDicItem>();
+        }
+        
+        if(he == null) {
+            he = new HashEngineDefault();
+        }
+        else {
+            this.he = he;
         }
     }
     
