@@ -70,41 +70,6 @@ public class TADDicionarioV4 {
         }
     }
     
-    private long hash_func(Object k) {
-        long soma = 0;
-        
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutput out = null;
-        byte[] vetBytes = null;
-        
-        try {
-            try {
-                out = new ObjectOutputStream(bos);
-                out.writeObject(k);
-                out.flush();
-                vetBytes = bos.toByteArray();
-                
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            
-        }
-        finally {
-            try {
-                bos.close();
-            }
-            catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        
-        for(int i = 0; i < vetBytes.length; i++) {
-            soma = soma + (int)vetBytes[i];
-        }
-        return soma;
-    }
-    
     public int getSizeVetBuckets() {
         return vetBuckets.length;
     }
@@ -204,11 +169,15 @@ public class TADDicionarioV4 {
         
         int posList = 0;
         while(posList < vetBuckets[indice].size()) {
-            if((((TDicItem)vetBuckets[indice].get(posList))).getChave().equals(chave))
-                return vetBuckets[indice].get(posList);
+            if((((TDicItem)vetBuckets[indice].get(posList))).getChave().equals(chave)) {
+                achou = true;
+                return ((TDicItem)(vetBuckets[indice].get(posList))).getValor();
+            }
+                
             posList++;
         }
         
+        achou = false;
         return null;
     }
     
@@ -296,7 +265,9 @@ public class TADDicionarioV4 {
     
     
     
-    
+    /**************************************************
+     * Exercicios pedidos no laboratorio
+     **************************************************/
     // retorna a qtd de colisoes por posicao do vetor de buckets
     public int[] getColisoes() {
         
