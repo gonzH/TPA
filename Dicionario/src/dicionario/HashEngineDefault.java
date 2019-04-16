@@ -17,7 +17,7 @@ import java.io.ObjectOutputStream;
 public class HashEngineDefault extends Hash_engine{
     
     public long hash_func(Object o){
-        long soma=0;
+        long soma = 0;
         
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutput out = null;

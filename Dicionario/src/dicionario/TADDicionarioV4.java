@@ -147,7 +147,7 @@ public class TADDicionarioV4 {
     public void insertItem(Object chave, Object valor) {
         Object aux = findElement(chave);
         
-        long cod_hash = he.hash_func(valor);
+        long cod_hash = he.hash_func(chave);
         //garante que meu indice nunca seja maior que o tamanho do vetor
         int indice = (int)cod_hash % getSizeVetBuckets();
         
