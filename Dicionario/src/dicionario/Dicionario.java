@@ -23,7 +23,9 @@ public class Dicionario {
         // TODO code application logic here
         
         //TESTES DA VERSAO 4 DO DICIONARIO
-        TADDicionarioV4 dic = new TADDicionarioV4(5);
+        Hash_engine hashEngine = new HashFNV();
+        TADDicionarioV4 dic = new TADDicionarioV4(hashEngine);
+        //TADDicionarioV4 dic = new TADDicionarioV4(5);
         
         dic.insertItem(123456, new RegHost(1234, "Chakuro", 12, 34));
         dic.insertItem(910111, new RegHost(5678, "Lykos", 56, 78));

@@ -55,7 +55,7 @@ public class TADDicionarioV4 {
     }
     
     public TADDicionarioV4(Hash_engine he) {
-        int tam = 100;
+        int tam = 5;
         vetBuckets = new LinkedList[tam];
         
         for(int i = 0; i < tam; i++) {
@@ -162,6 +162,10 @@ public class TADDicionarioV4 {
         //garante que meu indice nunca seja maior que o tamanho do vetor
         int indice = (int)cod_hash % getSizeVetBuckets();
         
+        //se o calculo resultar num numero menor que zero
+        if(indice < 0)
+            indice = indice * (-1);
+        
         if(NO_SUCH_KEY()) {
             vetBuckets[indice].add(new TDicItem(chave, valor));
             qtd_entradas++;
@@ -177,6 +181,9 @@ public class TADDicionarioV4 {
     public Object findElement(Object chave) {
         long cod_hash = he.hash_func(chave);
         int indice = (int)cod_hash % getSizeVetBuckets();
+        
+        if(indice < 0)
+            indice = indice * (-1);
         
         int posList = 0;
         while(posList < vetBuckets[indice].size()) {
@@ -208,6 +215,9 @@ public class TADDicionarioV4 {
         else {
             long cod_hash = he.hash_func(chave);
             int indice = (int)cod_hash % getSizeVetBuckets();
+            
+            if(indice < 0)
+                indice = indice * (-1);
             
             int posItem = buscaDicItem(vetBuckets[indice], chave);
             vetBuckets[indice].remove(posItem);
@@ -266,11 +276,10 @@ public class TADDicionarioV4 {
                     long cod_hash = he.hash_func(((TDicItem)aux).getChave());
                     int indice = (int)cod_hash % novoVetBuckets.length;
                     
-                    novoVetBuckets[indice].add(aux);
-                    /*long cod_hash = he.hash_func(((TDicItem)vetBuckets[posVet].get(posList)).getChave());
-                    int indice = (int)cod_hash % novoVetBuckets.length;
+                    if(indice < 0)
+                        indice = indice * (-1);
                     
-                    novoVetBuckets[indice].add(aux);*/
+                    novoVetBuckets[indice].add(aux);
                 }
             }
         }
