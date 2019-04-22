@@ -145,15 +145,26 @@ public class TADDicionarioV4 {
     }
     
     public void insertItem(Object chave, Object valor) {
+        if(lenMaiorLst() >= (int)getSizeVetBuckets() * 0.30) {
+            System.out.println("Redimensionando...");
+            System.out.println("Tamanho atual vetBuckets: " + getSizeVetBuckets());
+            System.out.println("Tamanho maior lista vetBuckets original: " + lenMaiorLst());
+            
+            redimensiona();
+            
+            System.out.println("Novo tamanho atual vetBuckets: " + getSizeVetBuckets());
+            System.out.println("Tamanho maior lista novo vetBuckets: " + lenMaiorLst());
+        }
+        
         Object aux = findElement(chave);
         
         long cod_hash = he.hash_func(chave);
         //garante que meu indice nunca seja maior que o tamanho do vetor
         int indice = (int)cod_hash % getSizeVetBuckets();
         
-        if(aux == null) {
+        if(NO_SUCH_KEY()) {
             vetBuckets[indice].add(new TDicItem(chave, valor));
-            qtd_entradas++;   
+            qtd_entradas++;
         }
         else {
             int pos = buscaDicItem(vetBuckets[indice], chave);
@@ -181,48 +192,51 @@ public class TADDicionarioV4 {
         return null;
     }
     
-    /* enunciado pede para retornar regdados*/
+    /**
+     * remove um elemento em uma dada posição, se a chave a ser removida não
+     * existe, então nada é feito.
+     * @param chave
+     * @return null/ objeto removido
+     */
     public Object removeElement(Object chave) {
         Object aux = findElement(chave);
         
-        if(aux == null) {
+        if(NO_SUCH_KEY()) {
+            achou = false;
             return null;
         }
         else {
             long cod_hash = he.hash_func(chave);
             int indice = (int)cod_hash % getSizeVetBuckets();
-
-            int posList = 0;
-            while(posList < vetBuckets[indice].size()) {
-                posList++;
-            }
             
-            vetBuckets[indice].remove(posList-1);
+            int posItem = buscaDicItem(vetBuckets[indice], chave);
+            vetBuckets[indice].remove(posItem);
             qtd_entradas--;
+            achou = true;
             
             return aux;
         }
     }
     
     public LinkedList<Object> keys() {
-        LinkedList<Object> iterador = new LinkedList<Object>();
-        
         if(isEmpty()) {
             return null;
         }
         else {
+            LinkedList<Object> iterador = new LinkedList<Object>();
+            
             for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
                 if(vetBuckets[posVet].size() > 0) {
                     for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
                         iterador.add(((TDicItem)vetBuckets[posVet].get(posList)).getChave());
-                    }
-                }
-            }
+                    } // for(int posList ...
+                } // if(vetBuckets[posVe...
+            } // for(int posVet = 0; posVe...
             return iterador;
-        }    
+        } // else {   
     }
     
-    private int lstMaiorLst() {
+    private int lenMaiorLst() {
         int maior = 0;
         
         for(int i = 0; i < getSizeVetBuckets(); i++) {
@@ -237,18 +251,26 @@ public class TADDicionarioV4 {
     }
     
     private void redimensiona(){
-        int newTam = 2*vetBuckets.length;
+        int newTam = 2 * getSizeVetBuckets();
         LinkedList[] novoVetBuckets = new LinkedList[newTam];
         
-        for(int i = 0; i < getSizeVetBuckets(); i++) {
-            if(vetBuckets[i] != null) {
-                for(int j = 0; j <vetBuckets[i].size(); j++) {
-                    Object aux = (TDicItem)vetBuckets[i].get(j);
+        for( int i = 0; i < newTam; i++) {
+            novoVetBuckets[i] = new LinkedList<TDicItem>();
+        }
+        
+        for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
+            if(vetBuckets[posVet] != null) {
+                for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
+                    Object aux = vetBuckets[posVet].get(posList);
                     
-                    long cod_hash = he.hash_func(((TDicItem)vetBuckets[i].get(j)).getChave());
+                    long cod_hash = he.hash_func(((TDicItem)aux).getChave());
                     int indice = (int)cod_hash % novoVetBuckets.length;
                     
                     novoVetBuckets[indice].add(aux);
+                    /*long cod_hash = he.hash_func(((TDicItem)vetBuckets[posVet].get(posList)).getChave());
+                    int indice = (int)cod_hash % novoVetBuckets.length;
+                    
+                    novoVetBuckets[indice].add(aux);*/
                 }
             }
         }
@@ -256,8 +278,61 @@ public class TADDicionarioV4 {
         vetBuckets = novoVetBuckets;
     }
     
+    public Hash_engine getHashEngine() {
+        return this.he;
+    }
     
+    /**
+     * Quando findElements() não encontra a chave buscada
+     * @return
+     */
+    public boolean NO_SUCH_KEY() {
+        return !achou;
+    }
     
+    /**
+     * Dicionários são iguais se possuirem a mesma quantidade de entrada, função
+     * de hashing, chaves e valores associados
+     * @param outroDic
+     * @return true/false
+     */
+    public boolean equals(TADDicionarioV4 outroDic) {
+        if(he == outroDic.getHashEngine()) {
+            if(this.size() == outroDic.size()) {
+                for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
+                    for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
+                        Object chave = ((TDicItem)(vetBuckets[posVet].get(posList))).getChave();
+                        Object dado = ((TDicItem)(vetBuckets[posVet].get(posList))).getValor();
+                        
+                        Object outroDado = outroDic.findElement(chave);
+                        if(outroDic.NO_SUCH_KEY() || (dado != outroDado)) {
+                            return false;
+                        } // if(outroDic.NO_SUCH_K...
+                    } // for(int posList = 0...
+                } // for(int posVet = 0; p...
+            } // if(this.size() == out...
+        } // if(he == outroDic...
+        
+        return true;
+    } 
+    
+    /**
+     * Clonagem profunda de um dicionário existente
+     * @return dicionarioClonado
+     */
+    public TADDicionarioV4 clone() {
+        TADDicionarioV4 dicClone = new TADDicionarioV4(he);
+        
+        for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
+            for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
+                Object chave = ((TDicItem)vetBuckets[posVet].get(posList)).getChave();
+                Object valor = ((TDicItem)vetBuckets[posVet].get(posList)).getValor();
+                dicClone.insertItem(chave, valor);
+            }
+        }
+        
+        return dicClone;
+    }
     
     
     

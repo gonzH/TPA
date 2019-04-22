@@ -29,32 +29,42 @@ public class Dicionario {
         dic.insertItem(910111, new RegHost(5678, "Lykos", 56, 78));
         dic.insertItem(314151, new RegHost(9101, "Ouni", 91, 01));
         dic.insertItem(718192, new RegHost(1112, "Suoh", 11, 12));
-        System.out.println("Inserção completa!");
+        System.out.println("#######################################################\n" + "Inserção completa!\n");
         
-        RegHost reg1 = (RegHost) dic.findElement(12345678);
-        
-        
-         if(reg1 != null){
-            System.out.println(reg1.getIp()+", "+reg1.getNome());
+        System.out.println("#######################################################\n" + "Buscando por Chakuro\n");
+        RegHost reg1 = (RegHost) dic.findElement(123456);
+        if(reg1 != null){
+            System.out.println("Dado encontrado: " + reg1.getIp() + ", " + reg1.getNome() + ", " + reg1.getRam() + ", " + reg1.getDisco());
         }
         else{
-            System.out.println("Erro 404 not found!");
+            System.out.println("Não foi encontrado");
         }
         
-        System.out.println("Tamanho do dicionario antes de alterar Chakuro" + dic.size());
+        System.out.println("\n#######################################################");
+        System.out.println("Tamanho do dicionario antes de alterar Chakuro: " + dic.size());
         dic.insertItem(123456, new RegHost(1234,"Chakuro",33,4));
-        System.out.println("Tamanho do dicionario após alterar chave Chakuro" + dic.size());
+        System.out.println("Tamanho do dicionario após alterar chave Chakuro: " + dic.size());
         
-        System.out.println("Removendo host Suoh do dicionario..");
+        reg1 = (RegHost) dic.findElement(123456);
+        if(reg1 != null){
+            System.out.println("Dado encontrado: " + reg1.getIp() + ", " + reg1.getNome() + ", " + reg1.getRam() + ", " + reg1.getDisco());
+        }
+        else{
+            System.out.println("Não foi encontrado");
+        }
+        
+        System.out.println("Removendo host Suoh do dicionario...");
         dic.removeElement(718192);
-        System.out.println("Tamanho do dicionario após a remoção do host Suoh" + dic.size());
+        
+        System.out.println("Tamanho do dicionario após a remoção do host Suoh: " + dic.size());
         reg1 = (RegHost)dic.findElement(718192);
         
+        reg1 = (RegHost) dic.findElement(718192);
         if(reg1 != null){
             System.out.println(reg1.getIp()+", "+reg1.getNome());
         }
         else{
-            System.out.println("Erro 404 not found!");
+            System.out.println("Erro 404 not found! ");
         }
         
 
