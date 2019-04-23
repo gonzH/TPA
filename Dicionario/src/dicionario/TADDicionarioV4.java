@@ -75,7 +75,7 @@ public class TADDicionarioV4 {
     }
     
     /* funcao de calculo de hash */
-    private long hashFunc(String s) {
+    /*private long hashFunc(String s) {
         long soma = 0;
         
         for(int i = 0; i < s.length(); i++) {
@@ -84,7 +84,7 @@ public class TADDicionarioV4 {
         
         System.out.println("Hash gerado: " + soma);
         return soma;
-    }
+    }*
     
     // 31 elevado
     private long hashFuncPol(String s) {
@@ -96,7 +96,7 @@ public class TADDicionarioV4 {
         
         System.out.println("Hash gerado: " + soma);
         return soma;
-    }
+    }*/
     
     /* funcoes do livro */
     public int size() {
@@ -162,10 +162,6 @@ public class TADDicionarioV4 {
         //garante que meu indice nunca seja maior que o tamanho do vetor
         int indice = (int)cod_hash % getSizeVetBuckets();
         
-        //se o calculo resultar num numero menor que zero
-        if(indice < 0)
-            indice = indice * (-1);
-        
         if(NO_SUCH_KEY()) {
             vetBuckets[indice].add(new TDicItem(chave, valor));
             qtd_entradas++;
@@ -181,9 +177,6 @@ public class TADDicionarioV4 {
     public Object findElement(Object chave) {
         long cod_hash = he.hash_func(chave);
         int indice = (int)cod_hash % getSizeVetBuckets();
-        
-        if(indice < 0)
-            indice = indice * (-1);
         
         int posList = 0;
         while(posList < vetBuckets[indice].size()) {
@@ -215,9 +208,6 @@ public class TADDicionarioV4 {
         else {
             long cod_hash = he.hash_func(chave);
             int indice = (int)cod_hash % getSizeVetBuckets();
-            
-            if(indice < 0)
-                indice = indice * (-1);
             
             int posItem = buscaDicItem(vetBuckets[indice], chave);
             vetBuckets[indice].remove(posItem);
@@ -276,9 +266,6 @@ public class TADDicionarioV4 {
                     long cod_hash = he.hash_func(((TDicItem)aux).getChave());
                     int indice = (int)cod_hash % novoVetBuckets.length;
                     
-                    if(indice < 0)
-                        indice = indice * (-1);
-                    
                     novoVetBuckets[indice].add(aux);
                 }
             }
@@ -326,7 +313,7 @@ public class TADDicionarioV4 {
     } 
     
     /**
-     * Clonagem profunda de um dicionário existente
+     * Clonagem superficial de um dicionário existente, apenas o dado não é clonado
      * @return dicionarioClonado
      */
     public TADDicionarioV4 clone() {

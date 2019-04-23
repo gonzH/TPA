@@ -90,10 +90,10 @@ public class HashFNV extends Hash_engine {
                 ex.printStackTrace();
             }
         }
-        HashFNV hashEngine = new HashFNV();
-        saida = hashEngine.hash32(vetBytes);
         
-        return saida;
+        saida = HashFNV.hash32(vetBytes);
+        
+        return Math.abs(saida);
     }
     
 }
