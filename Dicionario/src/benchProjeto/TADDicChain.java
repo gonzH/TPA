@@ -56,7 +56,7 @@ public class TADDicChain {
     }
     
     public TADDicChain(Hash_engine he) {
-        int tam = 5;
+        int tam = 100;
         vetBuckets = new LinkedList[tam];
         
         for(int i = 0; i < tam; i++) {
