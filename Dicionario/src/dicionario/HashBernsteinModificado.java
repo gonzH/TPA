@@ -71,7 +71,7 @@ public class HashBernsteinModificado extends Hash_engine {
         
         saida = HashBernsteinModificado.bernsteinModificado(k.toString());
         
-        return Math.abs(saida);
+        return saida;
     }
     
 }

@@ -49,8 +49,8 @@ public class HashPolinomial extends Hash_engine {
             soma = soma + 31^(int)vetBytes[i];    
         }
 
-        System.out.println("Hash gerado: " + soma);
-        return soma;
+        //System.out.println("Hash gerado: " + soma);
+        return Math.abs(soma);
     }
     
 }

@@ -59,7 +59,7 @@ public class HashBernstein extends Hash_engine {
         
         saida = HashBernstein.bernstein(k.toString());
         
-        return Math.abs(saida);
+        return saida;
     }
     
 }
