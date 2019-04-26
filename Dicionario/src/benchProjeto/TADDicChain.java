@@ -164,7 +164,9 @@ public class TADDicChain {
         int indice = (int)cod_hash % getSizeVetBuckets();
         
         if(NO_SUCH_KEY()) {
-            vetBuckets[indice].add(new TDicItem(chave, valor));
+            TDicItem dicItem = new TDicItem(chave, valor);
+            dicItem.setCache_hash(cod_hash);
+            vetBuckets[indice].add(dicItem);
             qtd_entradas++;
         }
         else {
