@@ -22,6 +22,7 @@ public class TADDicChain {
     private int qtd_entradas = 0;
     private Hash_engine he = null;
     private boolean achou = false;
+    private long lastHash;
     
     public TADDicChain(int qtdEntradas) {
         int tam = (int)(qtdEntradas/fator_de_carga);
@@ -132,7 +133,7 @@ public class TADDicChain {
         }
     }
     
-    public int buscaDicItem(LinkedList<TDicItem> lst, Object str) {
+    private int buscaDicItem(LinkedList<TDicItem> lst, Object str) {
         int posList = 0;
         
         while(posList < lst.size()) {
@@ -157,15 +158,16 @@ public class TADDicChain {
             System.out.println("Tamanho maior lista novo vetBuckets: " + lenMaiorLst());
         }
         
+        //ideia do lastHash, atributo do dicionario que guarda o ultimo hash calculado
         Object aux = findElement(chave);
         
-        long cod_hash = he.hash_func(chave);
+        //long cod_hash = he.hash_func(chave);
         //garante que meu indice nunca seja maior que o tamanho do vetor
-        int indice = (int)cod_hash % getSizeVetBuckets();
+        int indice = (int)this.lastHash % getSizeVetBuckets();
         
         if(NO_SUCH_KEY()) {
             TDicItem dicItem = new TDicItem(chave, valor);
-            dicItem.setCache_hash(cod_hash);
+            dicItem.setCache_hash(this.lastHash);
             vetBuckets[indice].add(dicItem);
             qtd_entradas++;
         }
@@ -178,8 +180,9 @@ public class TADDicChain {
     }
     
     public Object findElement(Object chave) {
-        long cod_hash = he.hash_func(chave);
-        int indice = (int)cod_hash % getSizeVetBuckets();
+//        long cod_hash = he.hash_func(chave);
+        this.lastHash = he.hash_func(chave);
+        int indice = (int)this.lastHash % getSizeVetBuckets();
         
         int posList = 0;
         while(posList < vetBuckets[indice].size()) {
@@ -209,8 +212,9 @@ public class TADDicChain {
             return null;
         }
         else {
-            long cod_hash = he.hash_func(chave);
-            int indice = (int)cod_hash % getSizeVetBuckets();
+//            long cod_hash = he.hash_func(chave);
+            
+            int indice = (int)this.lastHash % getSizeVetBuckets();
             
             int posItem = buscaDicItem(vetBuckets[indice], chave);
             vetBuckets[indice].remove(posItem);
@@ -266,7 +270,7 @@ public class TADDicChain {
                 for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
                     Object aux = vetBuckets[posVet].get(posList);
                     
-                    long cod_hash = he.hash_func(((TDicItem)aux).getChave());
+                    long cod_hash = ((TDicItem)aux).getCache_hash();
                     int indice = (int)cod_hash % novoVetBuckets.length;
                     
                     novoVetBuckets[indice].add(aux);
@@ -378,5 +382,17 @@ public class TADDicChain {
             writer.close();
         }
     }
+    
+    /* IDEIAS DE IMPLEMENTAÇÃO */
+    
 }
         
+
+/* NOTES */
+/*
+    Funcionamento do cacheHash estou pensando em manter uma lista atualizada com
+    as keys do dicionario, basicamente se algum item está inserido no dicionario
+    logo este item tem um cacheHash, então, toda vez que eu precisar calcular o
+    cod_hash da chave eu posso consultar a chave na lista de chaves e extrair de
+    la o cacheHash.
+*/

@@ -5,6 +5,7 @@
  */
 package dicionario;
 
+import dicionario.*;
 import java.io.ByteArrayOutputStream;
 import java.util.*;
 import java.io.FileWriter;
@@ -55,7 +56,7 @@ public class TADDicionarioV4 {
     }
     
     public TADDicionarioV4(Hash_engine he) {
-        int tam = 5;
+        int tam = 100;
         vetBuckets = new LinkedList[tam];
         
         for(int i = 0; i < tam; i++) {
@@ -163,7 +164,9 @@ public class TADDicionarioV4 {
         int indice = (int)cod_hash % getSizeVetBuckets();
         
         if(NO_SUCH_KEY()) {
-            vetBuckets[indice].add(new TDicItem(chave, valor));
+            TDicItem dicItem = new TDicItem(chave, valor);
+            dicItem.setCache_hash(cod_hash);
+            vetBuckets[indice].add(dicItem);
             qtd_entradas++;
         }
         else {
