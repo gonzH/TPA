@@ -106,7 +106,7 @@ public class TADDicChain {
     }
     
     public boolean isEmpty() {
-        if(qtd_entradas == 0) {
+        if(size() == 0) {
             return true;
         }
         else {
@@ -148,14 +148,14 @@ public class TADDicChain {
     
     public void insertItem(Object chave, Object valor) {
         if(lenMaiorLst() >= (int)getSizeVetBuckets() * 0.30) {
-            System.out.println("Redimensionando...");
-            System.out.println("Tamanho atual vetBuckets: " + getSizeVetBuckets());
-            System.out.println("Tamanho maior lista vetBuckets original: " + lenMaiorLst());
+//            System.out.println("Redimensionando...");
+//            System.out.println("Tamanho atual vetBuckets: " + getSizeVetBuckets());
+//            System.out.println("Tamanho maior lista vetBuckets original: " + lenMaiorLst());
             
             redimensiona();
             
-            System.out.println("Novo tamanho atual vetBuckets: " + getSizeVetBuckets());
-            System.out.println("Tamanho maior lista novo vetBuckets: " + lenMaiorLst());
+//            System.out.println("Novo tamanho atual vetBuckets: " + getSizeVetBuckets());
+//            System.out.println("Tamanho maior lista novo vetBuckets: " + lenMaiorLst());
         }
         
         //ideia do lastHash, atributo do dicionario que guarda o ultimo hash calculado
@@ -186,7 +186,7 @@ public class TADDicChain {
         
         int posList = 0;
         while(posList < vetBuckets[indice].size()) {
-            if((((TDicItem)vetBuckets[indice].get(posList))).getChave().equals(chave)) {
+            if(((TDicItem)vetBuckets[indice].get(posList)).getChave().equals(chave)) {
                 achou = true;
                 return ((TDicItem)(vetBuckets[indice].get(posList))).getValor();
             }
@@ -208,7 +208,6 @@ public class TADDicChain {
         Object aux = findElement(chave);
         
         if(NO_SUCH_KEY()) {
-            achou = false;
             return null;
         }
         else {
@@ -219,7 +218,6 @@ public class TADDicChain {
             int posItem = buscaDicItem(vetBuckets[indice], chave);
             vetBuckets[indice].remove(posItem);
             qtd_entradas--;
-            achou = true;
             
             return aux;
         }
@@ -330,19 +328,14 @@ public class TADDicChain {
             for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
                 Object chave = ((TDicItem)vetBuckets[posVet].get(posList)).getChave();
                 Object valor = ((TDicItem)vetBuckets[posVet].get(posList)).getValor();
+                
                 dicClone.insertItem(chave, valor);
             }
         }
         
-        return dicClone;
+return dicClone;
     }
-    
-    
-    
-    
-    
-    
-    
+        
     /**************************************************
      * Exercicios pedidos no laboratorio
      **************************************************/
@@ -382,17 +375,4 @@ public class TADDicChain {
             writer.close();
         }
     }
-    
-    /* IDEIAS DE IMPLEMENTAÇÃO */
-    
 }
-        
-
-/* NOTES */
-/*
-    Funcionamento do cacheHash estou pensando em manter uma lista atualizada com
-    as keys do dicionario, basicamente se algum item está inserido no dicionario
-    logo este item tem um cacheHash, então, toda vez que eu precisar calcular o
-    cod_hash da chave eu posso consultar a chave na lista de chaves e extrair de
-    la o cacheHash.
-*/
