@@ -6,7 +6,7 @@
 package tadgrafod;
 
 import java.util.LinkedList;
-import dicionario;
+import Dicionario;
 /**
  *
  * @author helle
