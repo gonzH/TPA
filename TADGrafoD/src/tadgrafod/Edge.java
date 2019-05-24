@@ -9,12 +9,12 @@ package tadgrafod;
  *
  * @author helle
  */
-public class Vertex {
+public class Edge {
     private int id;
     private String label;
     private Object dado;
     
-    public Vertex(String label, Object dado){
+    public Edge(String label, Object dado){
         this.label = label;
         this.dado = dado;
     }
