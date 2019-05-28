@@ -24,40 +24,9 @@ public class TADDicChain {
     private boolean achou = false;
     private long lastHash;
     
-    public TADDicChain(int qtdEntradas) {
-        int tam = (int)(qtdEntradas/fator_de_carga);
-        
-        vetBuckets = new LinkedList[tam];
-        
-        for( int i = 0; i < tam; i++) {
-            vetBuckets[i] = new LinkedList<TDicItem>();
-        }
-        
-        if(he == null) {
-            he = new HashEngineDefault();
-        }
-        else {
-            this.he = he;
-        }
-    }
-    
-    public TADDicChain() {
-        vetBuckets = new LinkedList[100];
-        
-        for( int i = 0; i < 100; i++) {
-            vetBuckets[i] = new LinkedList<TDicItem>();
-        }
-        
-        if(he == null) {
-            he = new HashEngineDefault();
-        }
-        else {
-            this.he = he;
-        }
-    }
-    
+  
     public TADDicChain(Hash_engine he) {
-        int tam = 100;
+        int tam = 1024;
         vetBuckets = new LinkedList[tam];
         
         for(int i = 0; i < tam; i++) {
@@ -72,115 +41,52 @@ public class TADDicChain {
         }
     }
     
-    public int getSizeVetBuckets() {
-        return vetBuckets.length;
-    }
-    
-    /* funcao de calculo de hash */
-    /*private long hashFunc(String s) {
-        long soma = 0;
+    public TADDicChain(int tam, Hash_engine he) {
+        vetBuckets = new LinkedList[tam];
         
-        for(int i = 0; i < s.length(); i++) {
-            soma = soma + (int)s.charAt(i);
+        for(int i = 0; i < tam; i++) {
+            vetBuckets[i] = new LinkedList<TDicItem>();
         }
         
-        System.out.println("Hash gerado: " + soma);
-        return soma;
-    }*
-    
-    // 31 elevado
-    private long hashFuncPol(String s) {
-        long soma = 0;
-        
-        for(int i = 0; i < s.length(); i++) {
-            soma = soma + 31^(int)s.charAt(i);
-        }
-        
-        System.out.println("Hash gerado: " + soma);
-        return soma;
-    }*/
-    
-    /* funcoes do livro */
-    public int size() {
-        return qtd_entradas;
-    }
-    
-    public boolean isEmpty() {
-        if(size() == 0) {
-            return true;
+        if(he == null) {
+            he = new HashEngineDefault();
         }
         else {
-            return false;
+            this.he = he;
         }
-    }
-    
-    public LinkedList<TDicItem> elements() {
-        LinkedList<TDicItem> iterador = new LinkedList<TDicItem>();
-        
-        if(isEmpty()) {
-            return iterador;
-        }
-        else {
-            for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
-                if(vetBuckets[posVet].size() > 0) {
-                    for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
-                        iterador.add(((TDicItem)vetBuckets[posVet].get(posList)));
-                    }
-                }
-            }
-            
-            return iterador;
-        }
-    }
-    
-    private int buscaDicItem(LinkedList<TDicItem> lst, Object str) {
-        int posList = 0;
-        
-        while(posList < lst.size()) {
-            if(((TDicItem)(lst.get(posList))).getChave().equals(str)) {
-                return posList;
-            }
-            posList++;
-        }
-        
-        return -1;
     }
     
     public void insertItem(Object chave, Object valor) {
-        if(lenMaiorLst() >= (int)getSizeVetBuckets() * 0.30) {
-//            System.out.println("Redimensionando...");
-//            System.out.println("Tamanho atual vetBuckets: " + getSizeVetBuckets());
-//            System.out.println("Tamanho maior lista vetBuckets original: " + lenMaiorLst());
-            
-            redimensiona();
-            
-//            System.out.println("Novo tamanho atual vetBuckets: " + getSizeVetBuckets());
-//            System.out.println("Tamanho maior lista novo vetBuckets: " + lenMaiorLst());
-        }
-        
-        //ideia do lastHash, atributo do dicionario que guarda o ultimo hash calculado
-        Object aux = findElement(chave);
-        
-        //long cod_hash = he.hash_func(chave);
-        //garante que meu indice nunca seja maior que o tamanho do vetor
-        int indice = (int)this.lastHash % getSizeVetBuckets();
-        
-        if(NO_SUCH_KEY()) {
-            TDicItem dicItem = new TDicItem(chave, valor);
-            dicItem.setCache_hash(this.lastHash);
-            vetBuckets[indice].add(dicItem);
-            qtd_entradas++;
+        if(!chave.equals(null)) {
+            if(lenMaiorLst() >= (int)getSizeVetBuckets() * 0.30) {           
+                redimensiona();
+            }
+
+            //ideia do lastHash, atributo do dicionario que guarda o ultimo hash calculado
+            Object aux = findElement(chave);
+
+            //garante que meu indice nunca seja maior que o tamanho do vetor
+            int indice = (int)this.lastHash % getSizeVetBuckets();
+
+            if(NO_SUCH_KEY()) {
+                TDicItem dicItem = new TDicItem(chave, valor);
+                dicItem.setCache_hash(this.lastHash);
+                vetBuckets[indice].add(dicItem);
+                qtd_entradas++;
+            }
+            else {
+                int pos = buscaDicItem(vetBuckets[indice], chave);
+                if(pos != -1) {
+                    ((TDicItem)(vetBuckets[indice].get(pos))).setValor(valor);
+                }
+            } 
         }
         else {
-            int pos = buscaDicItem(vetBuckets[indice], chave);
-            if(pos != -1) {
-                ((TDicItem)(vetBuckets[indice].get(pos))).setValor(valor);
-            }
-        } 
+            System.out.println("Impossível inserir uma chave nula!");
+        }
     }
     
     public Object findElement(Object chave) {
-//        long cod_hash = he.hash_func(chave);
         this.lastHash = he.hash_func(chave);
         int indice = (int)this.lastHash % getSizeVetBuckets();
         
@@ -223,40 +129,110 @@ public class TADDicChain {
         }
     }
     
+    public boolean isEmpty() {
+        if(size() == 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+   
+    /* funcoes do livro */
+    public int size() {
+        return qtd_entradas;
+    }
+    
+    /**
+     * Quando findElements() não encontra a chave buscada
+     * @return
+     */
+    public boolean NO_SUCH_KEY() {
+        return !achou;
+    }
+    
     public LinkedList<Object> keys() {
         if(isEmpty()) {
             return null;
         }
         else {
-            LinkedList<Object> iterador = new LinkedList<Object>();
+            LinkedList<TDicItem> iterador = getItens();
+            LinkedList<Object> saida = new LinkedList<Object>();
             
-            for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
-                if(vetBuckets[posVet].size() > 0) {
-                    for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
-                        iterador.add(((TDicItem)vetBuckets[posVet].get(posList)).getChave());
-                    } // for(int posList ...
-                } // if(vetBuckets[posVe...
-            } // for(int posVet = 0; posVe...
-            return iterador;
-        } // else {   
+            for(TDicItem t : iterador) {
+                saida.add(t.getChave());
+            }
+            
+            return saida;
+        
+        }
     }
     
-    private int lenMaiorLst() {
-        int maior = 0;
+    public LinkedList<Object> elements() {
+        if(isEmpty()) {
+            return null;
+        }
+        else {
+            LinkedList<TDicItem> iterador = getItens();
+            LinkedList<Object> saida = new LinkedList<Object>();
+            
+            for(TDicItem t : iterador) {
+                saida.add(t.getValor());
+            }
+            
+            return saida;
         
-        for(int i = 0; i < getSizeVetBuckets(); i++) {
-            if(vetBuckets[i] != null) {
-                if(vetBuckets[i].size() > maior) {
-                    maior = vetBuckets[i].size();
+        }
+        
+    }
+    
+    /**
+     * Clonagem superficial de um dicionário existente, apenas o dado não é clonado
+     * @return dicionarioClonado
+     */
+    public TADDicChain clone() {
+        TADDicChain dicClone = new TADDicChain(he);
+        
+        for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
+            for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
+                Object chave = ((TDicItem)vetBuckets[posVet].get(posList)).getChave();
+                Object valor = ((TDicItem)vetBuckets[posVet].get(posList)).getValor();
+                
+                dicClone.insertItem(chave, valor);
+            }
+        }
+        
+        return dicClone;
+    }
+    
+    /**
+     * Dicionários são iguais se possuirem a mesma quantidade de entrada, função
+     * de hashing, chaves e valores associados
+     * @param outroDic
+     * @return true/false
+     */
+    public boolean equals(TADDicChain outroDic) {
+        if(he == outroDic.getHashEngine()) {
+            if(this.size() == outroDic.size()) {
+                for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
+                    for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
+                        Object chave = ((TDicItem)(vetBuckets[posVet].get(posList))).getChave();
+                        Object dado = ((TDicItem)(vetBuckets[posVet].get(posList))).getValor();
+                        
+                        Object outroDado = outroDic.findElement(chave);
+                        if(outroDic.NO_SUCH_KEY() || (dado != outroDado)) {
+                            return false;
+                        }
+                    }
                 }
             }
         }
         
-        return maior;
-    }
+        return true;
+    } 
     
     private void redimensiona(){
-        int newTam = 2 * getSizeVetBuckets();
+        int newTam = (int)(1.5 * getSizeVetBuckets());
         LinkedList[] novoVetBuckets = new LinkedList[newTam];
         
         for( int i = 0; i < newTam; i++) {
@@ -279,68 +255,65 @@ public class TADDicChain {
         vetBuckets = novoVetBuckets;
     }
     
-    public Hash_engine getHashEngine() {
-        return this.he;
-    }
-    
-    /**
-     * Quando findElements() não encontra a chave buscada
-     * @return
-     */
-    public boolean NO_SUCH_KEY() {
-        return !achou;
-    }
-    
-    /**
-     * Dicionários são iguais se possuirem a mesma quantidade de entrada, função
-     * de hashing, chaves e valores associados
-     * @param outroDic
-     * @return true/false
-     */
-    public boolean equals(TADDicChain outroDic) {
-        if(he == outroDic.getHashEngine()) {
-            if(this.size() == outroDic.size()) {
-                for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
+    public LinkedList getItens() {
+        LinkedList<TDicItem> iterador = new LinkedList<TDicItem>();
+        
+        if(isEmpty()) {
+            return iterador;
+        }
+        else {
+            for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
+                if(vetBuckets[posVet].size() > 0) {
                     for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
-                        Object chave = ((TDicItem)(vetBuckets[posVet].get(posList))).getChave();
-                        Object dado = ((TDicItem)(vetBuckets[posVet].get(posList))).getValor();
-                        
-                        Object outroDado = outroDic.findElement(chave);
-                        if(outroDic.NO_SUCH_KEY() || (dado != outroDado)) {
-                            return false;
-                        } // if(outroDic.NO_SUCH_K...
-                    } // for(int posList = 0...
-                } // for(int posVet = 0; p...
-            } // if(this.size() == out...
-        } // if(he == outroDic...
-        
-        return true;
-    } 
+                        iterador.add(((TDicItem)vetBuckets[posVet].get(posList)));
+                    }
+                }
+            }
+            
+            return iterador;
+        }
+    }
     
-    /**
-     * Clonagem superficial de um dicionário existente, apenas o dado não é clonado
-     * @return dicionarioClonado
-     */
-    public TADDicChain clone() {
-        TADDicChain dicClone = new TADDicChain(he);
+    public int getSizeVetBuckets() {
+        return vetBuckets.length;
+    }
+
+    private int buscaDicItem(LinkedList<TDicItem> lst, Object str) {
+        int posList = 0;
         
-        for(int posVet = 0; posVet < getSizeVetBuckets(); posVet++) {
-            for(int posList = 0; posList < vetBuckets[posVet].size(); posList++) {
-                Object chave = ((TDicItem)vetBuckets[posVet].get(posList)).getChave();
-                Object valor = ((TDicItem)vetBuckets[posVet].get(posList)).getValor();
-                
-                dicClone.insertItem(chave, valor);
+        while(posList < lst.size()) {
+            if(((TDicItem)(lst.get(posList))).getChave().equals(str)) {
+                return posList;
+            }
+            posList++;
+        }
+        
+        return -1;
+    }
+
+    private int lenMaiorLst() {
+        int maior = 0;
+        
+        for(int i = 0; i < getSizeVetBuckets(); i++) {
+            if(vetBuckets[i] != null) {
+                if(vetBuckets[i].size() > maior) {
+                    maior = vetBuckets[i].size();
+                }
             }
         }
         
-return dicClone;
+        return maior;
     }
-        
+
+    public Hash_engine getHashEngine() {
+        return this.he;
+    }
+  
     /**************************************************
      * Exercicios pedidos no laboratorio
      **************************************************/
     // retorna a qtd de colisoes por posicao do vetor de buckets
-    public int[] getColisoes() {
+    public int[] getVetColisoes() {
         
         if(isEmpty()) {
             return null;
@@ -353,26 +326,6 @@ return dicClone;
             }
             
             return vetColisoes;
-        }
-    }
-    
-    //gera diagrama usando o matplotlib, relação colisao eixo y e pos no vetbuckets em grafico de barras
-    public void exibeDiagrama(int vet[]) throws IOException { //vou gerar .csv pois nao tenho matplotlib
-        
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(".\\diagrama.csv", true);
-            
-            for(int posVet = 0;posVet < vet.length; posVet++) {
-                writer.append(vet[posVet] + "," + posVet + "\n");
-            }
-            
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            writer.close();
         }
     }
 }
