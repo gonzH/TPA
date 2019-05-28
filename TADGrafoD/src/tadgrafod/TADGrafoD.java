@@ -37,11 +37,11 @@ public class TADGrafoD {
     }
     
     public void printmat(){
-        for(int i = primVertice; i < ultiVertice; i++) {
+        for(int i = primVertice; i < ultiVertice+1; i++) {
             if(!lstEliminados.contains(i)) {
                 for(int k = primVertice; k <= ultiVertice; k++) {
                     if(!lstEliminados.contains(i)) {
-                        System.out.println(String.format("%d",mat[i][k]));
+                        System.out.print(String.format("%d",mat[i][k]));
                     }
                 }
                 
@@ -88,7 +88,7 @@ public class TADGrafoD {
                             for(int m = 0; m < lstEs.size(); m++) {
                                 e = (Edge)dicLblEdge.findElement(lstEs.get(m));
                                 if(e.getId() == idEdge) {
-                                    labelDestino = e.getLabel();
+                                    labelEdge = e.getLabel();
                                     break;
                                 }
                             }
@@ -244,32 +244,6 @@ public class TADGrafoD {
             
             return grade;
         }
-    }
-    
-    
-    public Vertex insereVertex(String label, Object o){
-        int idV = geraIDvertice++;
-        
-        if(idV > ultiVertice){
-            ultiVertice = idV;
-        }
-        if(idV < primVertice){
-            primVertice = idV;
-        }
-        
-        
-        Vertex v = (Vertex)dicLblVertex.findElement(label);
-        if(dicLblVertex.NO_SUCH_KEY()){
-            v = new Vertex(label, o);
-            v.setId(idV);
-            dicLblVertex.insertItem(label, v);
-            quantVertices++;
-        }
-        else{
-            v.setDado(o);
-        }
-        
-        return v;
     }
     
     public Edge insertEdge(String origem, String destino, String label, Object o) {
