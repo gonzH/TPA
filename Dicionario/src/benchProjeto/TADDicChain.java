@@ -57,34 +57,31 @@ public class TADDicChain {
     }
     
     public void insertItem(Object chave, Object valor) {
-        if(!chave.equals(null)) {
-            if(lenMaiorLst() >= (int)getSizeVetBuckets() * 0.30) {           
-                redimensiona();
-            }
+        
+        if(lenMaiorLst() >= (int)getSizeVetBuckets() * 0.30) {           
+            redimensiona();
+        }
 
-            //ideia do lastHash, atributo do dicionario que guarda o ultimo hash calculado
-            Object aux = findElement(chave);
+        //ideia do lastHash, atributo do dicionario que guarda o ultimo hash calculado
+        Object aux = findElement(chave);
 
-            //garante que meu indice nunca seja maior que o tamanho do vetor
-            int indice = (int)this.lastHash % getSizeVetBuckets();
+        //garante que meu indice nunca seja maior que o tamanho do vetor
+        int indice = (int)this.lastHash % getSizeVetBuckets();
 
-            if(NO_SUCH_KEY()) {
-                TDicItem dicItem = new TDicItem(chave, valor);
-                dicItem.setCache_hash(this.lastHash);
-                vetBuckets[indice].add(dicItem);
-                qtd_entradas++;
-            }
-            else {
-                int pos = buscaDicItem(vetBuckets[indice], chave);
-                if(pos != -1) {
-                    ((TDicItem)(vetBuckets[indice].get(pos))).setValor(valor);
-                }
-            } 
+        if(NO_SUCH_KEY()) {
+            TDicItem dicItem = new TDicItem(chave, valor);
+            dicItem.setCache_hash(this.lastHash);
+            vetBuckets[indice].add(dicItem);
+            qtd_entradas++;
         }
         else {
-            System.out.println("Impossível inserir uma chave nula!");
-        }
+            int pos = buscaDicItem(vetBuckets[indice], chave);
+            if(pos != -1) {
+                ((TDicItem)(vetBuckets[indice].get(pos))).setValor(valor);
+            }
+        } 
     }
+    
     
     public Object findElement(Object chave) {
         this.lastHash = he.hash_func(chave);

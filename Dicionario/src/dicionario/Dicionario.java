@@ -5,6 +5,11 @@
  */
 package dicionario;
 
+import benchProjeto.TADDicChain;
+import dicionario.HashFNV;
+import dicionario.Hash_engine;
+import dicionario.RegHost;
+import dicionario.TADDicionarioV4;
 import dicionario.v1.RegDadosV1;
 import dicionario.v1.TADDicionarioV1;
 import java.util.LinkedList;
@@ -22,6 +27,13 @@ public class Dicionario {
     public static void main(String[] args) {
         // TODO code application logic here
         
+        Hash_engine hashEng = new HashFNV();
+        TADDicChain tadDicChain = new TADDicChain(hashEng);
+        
+        tadDicChain.insertItem("Asda", "asdsa");
+        
+        
+        /*
         //TESTES DA VERSAO 4 DO DICIONARIO
         Hash_engine hashEngine = new HashFNV();
         TADDicionarioV4 dic = new TADDicionarioV4(hashEngine);
@@ -70,7 +82,7 @@ public class Dicionario {
         }
         
 
-        
+        */
         
         //TESTES DA VERSAO 2 DO DICIONARIO
         

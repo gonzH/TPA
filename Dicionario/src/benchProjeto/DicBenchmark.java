@@ -62,9 +62,6 @@ public class DicBenchmark {
 		int TAM_TESTE = 50000;
                 
                 Hash_engine hashEng = new HashFNV();
-		//HashBernsteinModificado hashEng = new HashBernsteinModificado();
-                //HashSAX hashEng = new HashSAX();
-                //HashEngineDefault hashEng = new HashEngineDefault();
                 TADDicChain dicA = new TADDicChain(hashEng);
 		ArquivoTxt arqIn = ArquivoTxt.open("F:\\GitDesktop\\TPA\\Dicionario\\src\\benchProjeto\\maladireta.csv", "rt");
                 //ArquivoTxt arqIn = ArquivoTxt.open("C:\\Users\\20161bsi0390\\Documents\\GitHub\\TPA\\Dicionario\\src\\benchProjeto\\maladireta.csv", "rt");
