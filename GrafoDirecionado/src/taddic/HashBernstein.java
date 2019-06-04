@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package taddichain;
+package taddic;
 
+import taddic.Hash_engine;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
@@ -12,11 +13,24 @@ import java.io.ObjectOutputStream;
 
 /**
  *
- * @author hellesandrocarvalho
+ * @author helle
  */
-public class HashEngineDefault extends Hash_engine{
+public class HashBernstein extends Hash_engine {
     
-    public long hash_func(Object o){
+    private static long bernstein(String k) {
+        long h = 0;
+        int i;
+        
+        for(i = 0; i < k.length(); i++) {
+            h = 33 + h + (int)k.charAt(i);
+        }
+        
+        return Math.abs((int)h);
+    }
+
+    @Override
+    public long hash_func(Object k) {
+        long saida;
         long soma = 0;
         
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -26,7 +40,7 @@ public class HashEngineDefault extends Hash_engine{
         try {
             try {
                 out = new ObjectOutputStream(bos);
-                out.writeObject(o);
+                out.writeObject(k);
                 out.flush();
                 vetBytes = bos.toByteArray();
             } 
@@ -42,13 +56,11 @@ public class HashEngineDefault extends Hash_engine{
             catch(IOException ex) {
                 ex.printStackTrace();
             }
-        }    
-         
-        for(int i = 0; i < vetBytes.length; i++) {
-            soma = soma + (int)vetBytes[i];    
-        }
+        } 
         
-        return Math.abs(soma);
+        saida = HashBernstein.bernstein(k.toString());
         
-    }   
+        return saida;
+    }
+    
 }

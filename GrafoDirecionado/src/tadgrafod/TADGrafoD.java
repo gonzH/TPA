@@ -6,10 +6,9 @@
 package tadgrafod;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
-import taddichain.*;
+import taddic.TADDicChain;
 /**
  *
  * @author helle
@@ -22,8 +21,8 @@ public class TADGrafoD {
     private int geraIDedge = 1;
     private int geraIDvertice = 0;
     
-    TADDicChain dicLblVertex = new TADDicChain();
-    TADDicChain dicLblEdge = new TADDicChain();
+    TADDicChain dicLblVertex = new TADDicChain(null);
+    TADDicChain dicLblEdge = new TADDicChain(null);
     
     private int primVertice = 0;
     private int ultiVertice = 0;
@@ -116,6 +115,30 @@ public class TADGrafoD {
         }
     }
     
+    public LinkedList<Vertex> vertices() {
+        LinkedList<Vertex> linkedList = new LinkedList<Vertex>();
+        LinkedList<Object> lstKs = dicLblVertex.keys();
+        
+        for(int i = 0; i < lstKs.size(); i++) {
+            Vertex objV = (Vertex)dicLblVertex.findElement(lstKs.get(i));
+            linkedList.add(objV);
+        }
+        
+        return linkedList;
+    }
+    
+    public LinkedList<Edge> edges() {
+        LinkedList<Edge> linkedList = new LinkedList<Edge>();
+        LinkedList<Object> lstKs = dicLblEdge.keys();
+        
+        for(int i = 0; i < lstKs.size(); i++) {
+            Edge objE = (Edge)dicLblVertex.findElement(lstKs.get(i));
+            linkedList.add(objE);
+        }
+        
+        return linkedList;
+    }
+    
     public int numVertices(){
         return quantVertices;
     }
@@ -162,16 +185,48 @@ public class TADGrafoD {
         return null;
     }
     
-    public int[] endVertices(int e){ //???????????????????????????????????????????????????????????????????????????????????????????????
-        for(int i = primVertice;i<=ultiVertice;i++){
-            if(valido(i)){
-                for(int k=primVertice;k<=ultiVertice;k++){
-                    if(mat[i][k] == e){
-                        int[] v = new int[2];
-                        v[0] = i;
-                        v[1] = k;
-                        return v;
-                    }
+    public Vertex intToVertex(int id) {
+        LinkedList<Object> lst = dicLblVertex.elements();
+        
+        for(int i = 0; i < lst.size(); i++) {
+            Vertex v = (Vertex)lst.get(i);
+            if(id == v.getId()) {
+                return v;
+            }
+        }
+        
+        return null;
+    }
+    
+    public Edge intToEdge(int id) {
+        LinkedList<Object> lst = dicLblEdge.elements();
+        
+        for(int i = 0; i < lst.size(); i++) {
+            Edge e = (Edge)lst.get(i);
+            if(id == e.getId()) {
+                return e;
+            }
+        }
+        
+        return null;
+    }
+    
+    public Vertex[] endVertices(String labelE){ //???????????????????????????????????????????????????????????????????????????????????????????????
+        Edge oE = (Edge)dicLblEdge.findElement(labelE);
+        
+        if(dicLblEdge.NO_SUCH_KEY()) {
+            return null;
+        }
+        
+        int idE = oE.getId();
+        
+        for(int i = 0; i <= mat[0].length;i++) {
+            for(int k = 0; k <= mat[0].length; k++) {
+                if(mat[i][k] == idE){
+                    Vertex[] v = new Vertex[2];
+                    v[0] = intToVertex(i);
+                    v[1] = intToVertex(k);
+                    return v; 
                 }
             }
         }
@@ -419,14 +474,127 @@ public class TADGrafoD {
             return in + out;
         }
     }
+    
+    /*
+     * MÉTODOS PARA GRAFO DIRIGIDO PAG 496
+     */
+    public Vertex destination(String labelE) { 
+        Vertex[] vet = endVertices(labelE);
+        
+        if(vet != null) {
+            return vet[1];
+        }
+        else {
+            return null;
+        }
+    }
+    
+    public Vertex origin(String labelE) { 
+        Vertex[] vet = endVertices(labelE);
+        
+        if(vet != null) {
+            return vet[0];
+        }
+        else {
+            return null;
+        }
+    }
+    
+    public LinkedList<Edge> inIncidentEdges(String labelV) { 
+        Vertex v = (Vertex)dicLblVertex.findElement(labelV);
+        
+        if(dicLblVertex.NO_SUCH_KEY()) {
+            return null;
+        }
+        
+        LinkedList<Edge> lst = new LinkedList<Edge>();
+        int id = v.getId();
+        
+        for(int i = primVertice; i <= ultiVertice; i++) {
+            if((!lstEliminados.contains(i)) && (mat[id][i] != 0)) {
+                lst.add(intToEdge(mat[id][i]));
+            }
+        }
+        
+        return null;
+    
+    }
+    
+    public LinkedList<Edge> outIncidentEdges(String labelV) { 
+        Vertex v = (Vertex)dicLblVertex.findElement(labelV);
+        
+        if(dicLblVertex.NO_SUCH_KEY()) {
+            return null;
+        }
+        
+        LinkedList<Edge> lst = new LinkedList<Edge>();
+        int id = v.getId();
+        
+        for(int i = primVertice; i <= ultiVertice; i++) {
+            if((!lstEliminados.contains(i)) && (mat[i][id] != 0)) {
+                lst.add(intToEdge(mat[i][id]));
+            }
+        }
+        
+        return null;
+    }
+    
+    public LinkedList<Vertex> inAdjacenteVertices(String labelV) { 
+        Vertex v = (Vertex)dicLblVertex.findElement(labelV);
+        
+        if(dicLblVertex.NO_SUCH_KEY()) {
+            return null;
+        }
+        
+        LinkedList<Vertex> lst = new LinkedList<Vertex>();
+        int id = v.getId();
+        
+        for(int i = primVertice; i <= ultiVertice; i++) {
+            if((!lstEliminados.contains(i)) && (mat[id][i] != 0)) {
+                lst.add(intToVertex(i));
+            }
+        }
+        
+        return null;
+    }
+    
+    public LinkedList<Vertex> outAdjacenteVertices(String labelV) { 
+        Vertex v = (Vertex)dicLblVertex.findElement(labelV);
+        
+        if(dicLblVertex.NO_SUCH_KEY()) {
+            return null;
+        }
+        
+        LinkedList<Vertex> lst = new LinkedList<Vertex>();
+        int id = v.getId();
+        
+        for(int i = primVertice; i <= ultiVertice; i++) {
+            if((!lstEliminados.contains(i)) && (mat[i][id] != 0)) {
+                lst.add(intToVertex(i));
+            }
+        }
+        
+        return null;
+    
+    }
+    
+    public LinkedList<Edge> incidentEdges(String labelV) { 
+        LinkedList<Edge> lst = inIncidentEdges(labelV);
+        lst.addAll(outIncidentEdges(labelV));
+        return lst;
+    }
+    
+    public LinkedList<Vertex> adjacentVertices(String labelV) { //NAO TENHO CTZ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        LinkedList<Vertex> lst = inAdjacenteVertices(labelV);
+        lst.addAll(outAdjacenteVertices(labelV));
+        return lst;
+    }
+    
+    
+    
 
 
     
     
            
 }
-
-
-///TO DO 
-///public Integer degree(string str)
-///public Edge insertEdge(String vu, String vv, String label, Object o)
