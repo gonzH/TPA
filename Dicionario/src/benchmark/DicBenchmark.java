@@ -1,4 +1,4 @@
-package benchProjeto;
+package benchmark;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,12 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import _my_tools.*;
-import dicionario.HashBernstein;
-import dicionario.HashBernsteinModificado;
-import dicionario.HashEngineDefault;
-import dicionario.HashFNV;
-import dicionario.HashSAX;
-import dicionario.Hash_engine;
+import taddic.*;
 
 class RegMD {
 	private String cpf;
@@ -61,9 +56,9 @@ public class DicBenchmark {
 	public static void main(String[] args) {
 		int TAM_TESTE = 50000;
                 
-                Hash_engine hashEng = new HashFNV();
-                TADDicChain dicA = new TADDicChain(hashEng);
-		ArquivoTxt arqIn = ArquivoTxt.open("F:\\GitDesktop\\TPA\\Dicionario\\src\\benchProjeto\\maladireta.csv", "rt");
+                TADDicChain dicA = new TADDicChain(new HashFNV());
+                
+		ArquivoTxt arqIn = ArquivoTxt.open("F:\\GitDesktop\\TPA\\Dicionario\\src\\benchmark\\maladireta.csv", "rt");
                 //ArquivoTxt arqIn = ArquivoTxt.open("C:\\Users\\20161bsi0390\\Documents\\GitHub\\TPA\\Dicionario\\src\\benchProjeto\\maladireta.csv", "rt");
 		
 		HashMap<Object, Object> hm = new HashMap<Object, Object>();
@@ -97,7 +92,7 @@ public class DicBenchmark {
 		
 		/* Transferindo elementos entre dicionários. */
 		System.out.println("\nTestando a transferência de entradas entre dicionários..");
-		TADDicChain dicB = new TADDicChain(hashEng);
+		TADDicChain dicB = new TADDicChain(new HashFNV());
 		
 		System.out.println("  Antes da transferência: quantidade de entradas do dicionário A: " + dicA.size());
 		System.out.println("  Antes da transferência: quantidade de entradas do dicionário B: " + dicB.size());

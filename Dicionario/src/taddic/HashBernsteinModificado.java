@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dicionario;
+package taddic;
 
+import taddic.Hash_engine;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
@@ -14,10 +15,34 @@ import java.io.ObjectOutputStream;
  *
  * @author helle
  */
-public class HashPolinomial extends Hash_engine {
+public class HashBernsteinModificado extends Hash_engine {
+    
+    private static long bernsteinModificado(String k) {
+        long h = 0;
+        int i;
+        
+        for(i = 0; i < k.length(); i++) {
+            h = (33 + h) ^ (int)k.charAt(i);
+        }
+        
+        return Math.abs((int)h);
+    }
+    
+    //ver https://github.com/kfricilone/OpenRS/blob/master/source/net/openrs/util/crypto/Djb2.java
+    public static long bernsteinModificadoV2(String str) {
+	long hash = 0;
+        
+	for (int i = 0; i < str.length(); i++) {
+            hash = str.charAt(i) + ((hash << 5) - hash);
+	}
+        
+	return hash;
+    }
+    
 
     @Override
     public long hash_func(Object k) {
+        long saida;
         long soma = 0;
         
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -43,14 +68,11 @@ public class HashPolinomial extends Hash_engine {
             catch(IOException ex) {
                 ex.printStackTrace();
             }
-        }    
+        } 
         
-        for(int i = 0; i < vetBytes.length; i++) {
-            soma = soma + 31^(int)vetBytes[i];    
-        }
-
-        //System.out.println("Hash gerado: " + soma);
-        return Math.abs(soma);
+        saida = HashBernsteinModificado.bernsteinModificado(k.toString());
+        
+        return saida;
     }
     
 }

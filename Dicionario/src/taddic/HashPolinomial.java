@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dicionario;
+package taddic;
 
+import taddic.Hash_engine;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
@@ -12,11 +13,12 @@ import java.io.ObjectOutputStream;
 
 /**
  *
- * @author hellesandrocarvalho
+ * @author helle
  */
-public class HashEngineDefault extends Hash_engine{
-    
-    public long hash_func(Object o){
+public class HashPolinomial extends Hash_engine {
+
+    @Override
+    public long hash_func(Object k) {
         long soma = 0;
         
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -26,7 +28,7 @@ public class HashEngineDefault extends Hash_engine{
         try {
             try {
                 out = new ObjectOutputStream(bos);
-                out.writeObject(o);
+                out.writeObject(k);
                 out.flush();
                 vetBytes = bos.toByteArray();
             } 
@@ -43,12 +45,13 @@ public class HashEngineDefault extends Hash_engine{
                 ex.printStackTrace();
             }
         }    
-         
+        
         for(int i = 0; i < vetBytes.length; i++) {
-            soma = soma + (int)vetBytes[i];    
+            soma = soma + 31^(int)vetBytes[i];    
         }
-        
+
+        //System.out.println("Hash gerado: " + soma);
         return Math.abs(soma);
-        
-    }   
+    }
+    
 }
