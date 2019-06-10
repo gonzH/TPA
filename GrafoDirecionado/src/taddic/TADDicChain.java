@@ -316,4 +316,13 @@ public class TADDicChain {
             return vetColisoes;
         }
     }
+    
+    public void showall(){
+        for (LinkedList<TDicItem> linkedListReg : this.vetBuckets) {
+            for (TDicItem data : linkedListReg) {
+                System.out.printf("%s\n",data.toString());
+            }
+        }
+    }
+    
 }
