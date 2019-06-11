@@ -16,13 +16,17 @@ public class Main {
         tadGrafoD.insertVertex("A", 1);
         tadGrafoD.insertVertex("B", 2);
         tadGrafoD.insertVertex("C", 3);
-        tadGrafoD.insertEdge("A", "B", "ab", 12);
+        tadGrafoD.insertVertex("D", 9);
+        
+        tadGrafoD.insertEdge("B", "A", "ab", 12);
         tadGrafoD.insertEdge("B", "C", "bc", 23);
         tadGrafoD.insertEdge("C", "C", "cc", 33);
+        tadGrafoD.insertEdge("D", "D", "edge4", 44);
+        tadGrafoD.insertEdge(null, "C", "edge5", 55);
         
         tadGrafoD.printmat();
         
-        System.out.println("");
+        System.out.println("\n--------------------------------------------------\n");
         
         tadGrafoD.printgrafo();
     }

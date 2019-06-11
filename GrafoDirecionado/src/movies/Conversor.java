@@ -67,9 +67,9 @@ public class Conversor {
                     dicElements.insertItem(vet[i], this.geraIDVertex()); // Insere item de chave filme/ator e valor id;
 
                 if(i == 0) { //Se for filme...
-                    System.out.println("adicionando filme: "+vet[i]+"| ID: "+(Integer) dicElements.findElement(vet[i]));
+                    System.out.println("adicionando filme: " + vet[i] + "| ID: " + (Integer) dicElements.findElement(vet[i]));
                     if(!atoresId.isEmpty()) {
-                        System.out.println("filme: "+filme+"| autoresId: "+atoresId.toString());
+                        System.out.println("filme: " + filme + "| autoresId: " + atoresId.toString());
                         dicRelationships.insertItem(filme, atoresId);
 //                        System.out.println("BEFORE: "+dicRelationships.findElement(filme));
                         atoresId = new ArrayList<>();
@@ -78,7 +78,7 @@ public class Conversor {
                     
                 }
                 else {
-                    System.out.println("adicionado ator: "+vet[i]+"| ID: "+(Integer) dicElements.findElement(vet[i]));
+                    System.out.println("adicionado ator: " + vet[i] + "| ID: " + (Integer) dicElements.findElement(vet[i]));
                     atoresId.add((Integer) dicElements.findElement(vet[i]));
                 }
             }                

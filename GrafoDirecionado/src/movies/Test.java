@@ -18,7 +18,8 @@ public class Test {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        String path = "C:\\Users\\20161bsi0390\\Documents\\GitHub\\TPA\\GrafoDirecionado\\src\\movies\\";
+        //String path = "C:\\Users\\20161bsi0390\\Documents\\GitHub\\TPA\\GrafoDirecionado\\src\\movies\\";
+        String path = "F:\\GitDesktop\\TPA\\GrafoDirecionado\\src\\movies\\";
         String arq = "movies.txt";
         Conversor conversor = new Conversor(path);
         conversor.converte(arq, "saida_tgf");

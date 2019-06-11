@@ -40,7 +40,7 @@ public class TADGrafoD {
             if(!lstEliminados.contains(i)) {
                 for(int k = primVertice; k <= ultiVertice; k++) {
                     if(!lstEliminados.contains(i)) {
-                        System.out.print(String.format("%d",mat[i][k]));
+                        System.out.print(String.format("%d ", mat[i][k]));
                     }
                 }
                 
@@ -50,68 +50,74 @@ public class TADGrafoD {
     }
     
     public void printgrafo() {
-        ArrayList<String> al = new ArrayList<String>();
-        String s, labelOrigem = "", labelDestino = "", labelEdge = "";
         
-        Vertex v;
-        Edge e;
-        
-        LinkedList<Object> lstVs = dicLblVertex.keys();
-        LinkedList<Object> lstEs = dicLblEdge.keys();
-        
-        for(int i = primVertice; i <= ultiVertice; i++) {
-            s = "";
-            
-            if(!lstEliminados.contains(i)) {
-                for(int j = 0; j < lstVs.size(); j++) {
-                    v = (Vertex)dicLblVertex.findElement(lstVs.get(j));
-                    if(v.getId() == i) {
-                        labelOrigem = v.getLabel();
-                        break;
-                    }
-                }
-                
-                for(int k = primVertice; k <= ultiVertice; k++) {
-                    if(!lstEliminados.contains(k)) {
-                        for(int m = 0; m < lstVs.size(); m++) {
-                            v = (Vertex)dicLblVertex.findElement(lstVs.get(m));
-                            if(v.getId() == k) {
-                                labelDestino = v.getLabel();
-                                break;
-                            }
+        if(numVertices() > 1) {
+            ArrayList<String> al = new ArrayList<String>();
+            String s, labelOrigem = "", labelDestino = "", labelEdge = "";
+
+            Vertex v;
+            Edge e;
+
+            LinkedList<Object> lstVs = dicLblVertex.keys();
+            LinkedList<Object> lstEs = dicLblEdge.keys();
+
+            for(int i = primVertice; i <= ultiVertice; i++) {
+                s = "";
+
+                if(!lstEliminados.contains(i)) {
+                    for(int j = 0; j < lstVs.size(); j++) {
+                        v = (Vertex)dicLblVertex.findElement(lstVs.get(j));
+                        if(v.getId() == i) {
+                            labelOrigem = v.getLabel();
+                            break;
                         }
-                        
-                        int idEdge = mat[i][k];
-                        
-                        if(idEdge != 0) {
-                            for(int m = 0; m < lstEs.size(); m++) {
-                                e = (Edge)dicLblEdge.findElement(lstEs.get(m));
-                                if(e.getId() == idEdge) {
-                                    labelEdge = e.getLabel();
+                    }
+
+                    for(int k = primVertice; k <= ultiVertice; k++) {
+                        if(!lstEliminados.contains(k)) {
+                            for(int m = 0; m < lstVs.size(); m++) {
+                                v = (Vertex)dicLblVertex.findElement(lstVs.get(m));
+                                if(v.getId() == k) {
+                                    labelDestino = v.getLabel();
                                     break;
                                 }
                             }
-                            
-                            s = labelOrigem + "--" + labelEdge + "-->" + labelDestino;
-                            al.add(s);
+
+                            int idEdge = mat[i][k];
+
+                            if(idEdge != 0) {
+                                for(int m = 0; m < lstEs.size(); m++) {
+                                    e = (Edge)dicLblEdge.findElement(lstEs.get(m));
+                                    if(e.getId() == idEdge) {
+                                        labelEdge = e.getLabel();
+                                        break;
+                                    }
+                                }
+
+                                s = labelOrigem + "--" + labelEdge + "-->" + labelDestino;
+                                al.add(s);
+                            }
                         }
                     }
                 }
+            } //for int i...
+
+            //Island vertex treatment
+            for(int i = 0; i < lstVs.size(); i++) {
+                String lbl = (String)lstVs.get(i);
+                if(degree(lbl) == 0) {
+                    al.add(lbl);
+                }
             }
-        } //for int i...
         
-        //Island vertex treatment
-        for(int i = 0; i < lstVs.size(); i++) {
-            String lbl = (String)lstVs.get(i);
-            if(degree(lbl) == 0) {
-                al.add(lbl);
+            Collections.sort(al);
+
+            for(int n = 0; n < al.size(); n ++) {
+                System.out.println(al.get(n));
             }
         }
-        
-        Collections.sort(al);
-        
-        for(int n = 0; n < al.size(); n ++) {
-            System.out.println(al.get(n));
+        else {
+            System.out.println("Grafo não possui vertices suficiente!");
         }
     }
     
@@ -140,11 +146,11 @@ public class TADGrafoD {
     }
     
     public int numVertices(){
-        return quantVertices;
+        return this.quantVertices;
     }
     
     public int numEdges(){
-        return quantEdges;
+        return this.quantEdges;
     }
     
     public String getNome() {
@@ -288,11 +294,11 @@ public class TADGrafoD {
             return null;
         }
         else {
-            int line = v.getId();
+            int column = v.getId();
             int grade = 0;
             
             for(int i = primVertice; i <= ultiVertice; i++) {
-                if((mat[i][line] != 0) && !lstEliminados.contains(i)) {
+                if((mat[i][column] != 0) && !lstEliminados.contains(i)) {
                     grade++;
                 }
             }
@@ -423,10 +429,15 @@ public class TADGrafoD {
             id = geraIDvertice++;
         }
         else {
+            /* if some vertex is removed,
+            the next id will receive an id that used to have a vertex
+            this mechanism ensures that the spaces of vertex removed are filled
+            */
             id = lstEliminados.get(0);
             lstEliminados.remove();
         }
         
+        /* control of the margin */
         if(id < primVertice)
             primVertice = id;
         
