@@ -388,7 +388,9 @@ public class TADGrafoD {
         }
         
         int idV = v.getId();
-            
+        
+        //checking if the id of vertex about to be removed is the actual first 
+        //vertex and then reset to the next int available if its true
         if(idV == primVertice) {
             for(int i = primVertice+1; i <= ultiVertice; i++) {
                 if(!lstEliminados.contains(i)) {
@@ -398,8 +400,9 @@ public class TADGrafoD {
             }
         }
 
+        //same structure of the last if conditional but for the last id
         if(idV == ultiVertice) {
-            for(int i = ultiVertice+1; i <= primVertice; i++) {
+            for(int i = ultiVertice-1; i >= primVertice; i--) {
                 if(!lstEliminados.contains(i)) {
                     ultiVertice = i;
                     break;
@@ -408,15 +411,17 @@ public class TADGrafoD {
         }
         
         for(int i = primVertice; i <= ultiVertice; i++) {
-            //Fill removed vertex line with 0's that means the vertex does not exist
+            //Fill removed vertex line with 0's that means the vertex does not 
+            //have any connection with other vertex, also does not exist
             if(mat[idV][i] != 0) {
                 quantEdges--;
                 mat[idV][i] = 0;
             }
             
-            //Fill removed vertex column with 0's that menas the vertex does not exist
-            //Also prevent from decrementing quantEdges already decremented
-            if((mat[i][idV] !=0) && (mat[idV][i] != mat[i][idV])) {
+            //Fill removed vertex column with 0's that means the vertex does not
+            //have any connection with other vertex, also does not exist
+            //and prevent from decrementing quantEdges already decremented
+            if((mat[i][idV] != 0) && (mat[idV][i] != mat[i][idV])) {
                 quantEdges--;
                 mat[i][idV] = 0;
             }
