@@ -34,6 +34,10 @@ public class TADGrafoD {
         mat = new int[16][16];
         this.nome = nome;
     }
+
+    TADGrafoD() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     public void printmat(){
         for(int i = primVertice; i < ultiVertice+1; i++) {
@@ -172,7 +176,7 @@ public class TADGrafoD {
             return null;
         }
         
-        int idEdge = mat[vOrigem.getId()][vDestino.getId()];
+        int idEdge = this.mat[vOrigem.getId()][vDestino.getId()];
         
         if(idEdge == 0) {
             return null;
@@ -189,6 +193,16 @@ public class TADGrafoD {
         }
         
         return null;
+    }
+    
+    public Vertex getVertice(String label) {
+        Vertex vertice = (Vertex)this.dicLblVertex.findElement(label);
+        if(dicLblVertex.NO_SUCH_KEY()) {
+            return null;
+        }
+        else {
+            return vertice;
+        }
     }
     
     public Vertex intToVertex(int id) {
@@ -307,7 +321,8 @@ public class TADGrafoD {
         }
     }
     
-    public Edge insertEdge(String origem, String destino, String label, Object o) {
+    public Edge insertEdge(String origem, String destino, String label, Object obj) {
+        //verifying that the vertex's exist
         Vertex vOrigem = (Vertex)dicLblVertex.findElement(origem);
         if(dicLblVertex.NO_SUCH_KEY()) {
             return null;
@@ -318,23 +333,27 @@ public class TADGrafoD {
             return null;
         }
         
-        Edge e = (Edge)dicLblEdge.findElement(label);
+        /* 
+         finding an edge to insert, if it dont exists we'll create a new edge,
+         if it already exists then just insert         
+        */ 
+        Edge edgeToInsert = (Edge)dicLblEdge.findElement(label);
         
         //Inclusion of a new arch
         if(dicLblEdge.NO_SUCH_KEY()) {
-            e = new Edge(label, o);
-            e.setId(geraIDedge++);
+            edgeToInsert = new Edge(label, obj);
+            edgeToInsert.setId(geraIDedge++);
             
-            dicLblEdge.insertItem(label, e);
+            dicLblEdge.insertItem(label, edgeToInsert);
             
-            mat[vOrigem.getId()][vDestino.getId()] = e.getId();
+            mat[vOrigem.getId()][vDestino.getId()] = edgeToInsert.getId();
             quantEdges++;
         } //Update of a existent arch
         else {
-            e.setDado(o);
+            edgeToInsert.setDado(obj);
         }
         
-        return e; 
+        return edgeToInsert; 
     }
     
     public Object removeEdge(String edge){
@@ -557,12 +576,12 @@ public class TADGrafoD {
             return null;
         }
         
-        LinkedList<Vertex> lst = new LinkedList<Vertex>();
+        LinkedList<Vertex> lstInVertex = new LinkedList<Vertex>();
         int id = v.getId();
         
         for(int i = primVertice; i <= ultiVertice; i++) {
-            if((!lstEliminados.contains(i)) && (mat[id][i] != 0)) {
-                lst.add(intToVertex(i));
+            if((!lstEliminados.contains(i)) && (mat[i][id] != 0)) {
+                lstInVertex.add(intToVertex(i));
             }
         }
         
@@ -571,21 +590,20 @@ public class TADGrafoD {
     
     public LinkedList<Vertex> outAdjacenteVertices(String labelV) { 
         Vertex v = (Vertex)dicLblVertex.findElement(labelV);
-        
         if(dicLblVertex.NO_SUCH_KEY()) {
             return null;
         }
         
-        LinkedList<Vertex> lst = new LinkedList<Vertex>();
+        LinkedList<Vertex> lstOutVertex = new LinkedList<Vertex>();
         int id = v.getId();
         
         for(int i = primVertice; i <= ultiVertice; i++) {
-            if((!lstEliminados.contains(i)) && (mat[i][id] != 0)) {
-                lst.add(intToVertex(i));
+            if((!lstEliminados.contains(i)) && (mat[id][i] != 0)) {
+                lstOutVertex.add(intToVertex(i));
             }
         }
         
-        return null;
+        return lstOutVertex;
     
     }
     
