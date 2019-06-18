@@ -7,6 +7,7 @@ package tadgrafod;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  *
@@ -23,41 +24,70 @@ public class ProcessaGrafo {
         this.lstEdgeGraph = this.graph.edges();
     }
     
-    //testar dps
-    //public LinkedList<Vertex> bsf() {
-    //Vertex mainVertex = this.graph.primVertice;
     
     //FIFO queue
-    public LinkedList<Vertex> bsf(String vertexLabel) {
+    public LinkedList<Vertex> bfs(String vertexLabel) {
         Vertex mainVertex = this.graph.getVertice(vertexLabel);
         Queue fila = new LinkedList<Vertex>();
-        Queue filaSaida = new LinkedList<Vertex>();
+        Queue filaBFS = new LinkedList<Vertex>();
         
         fila.add(mainVertex);
         
         while(!fila.isEmpty()) {
             Vertex headQueue = (Vertex)fila.remove();
-            LinkedList<Vertex> destinyVertex = this.graph.outAdjacenteVertices(headQueue.getLabel());
-            if(!destinyVertex.isEmpty()) {
-                if(!filaSaida.contains(headQueue)) {
-                    filaSaida.add(headQueue);
+            LinkedList<Vertex> lstNeighborVertex = this.graph.outAdjacenteVertices(headQueue.getLabel());
+            
+            if(!lstNeighborVertex.isEmpty()) {
+                if(!filaBFS.contains(headQueue)) {
+                    filaBFS.add(headQueue);
                 }
                 
-                for(Vertex destiny : destinyVertex) {
-                    if(!filaSaida.contains(destiny)) {
-                        fila.add(destiny);
+                for(Vertex neighbor : lstNeighborVertex) {
+                    if(!filaBFS.contains(neighbor)) {
+                        fila.add(neighbor);
                     }
                 }
             }
             else {
-                if(!filaSaida.contains(headQueue))
-                    filaSaida.add(headQueue);
+                if(!filaBFS.contains(headQueue))
+                    filaBFS.add(headQueue);
             }
         }
         
-        return (LinkedList<Vertex>) filaSaida;
+        return (LinkedList<Vertex>) filaBFS;
         
     }
     
-    //public LinkedList<Vertex> dsf(String verticeLabel){    
+    public LinkedList<Vertex> dfs(String vertexLabelInicial){ 
+        Vertex mainVertex = this.graph.getVertice(vertexLabelInicial);
+        LinkedList<Vertex> stackVisitados = new LinkedList<Vertex>();
+        LinkedList<Vertex> stackDFS = new LinkedList<Vertex>();
+        
+        stackVisitados.add(mainVertex);
+        
+        while(!stackVisitados.isEmpty()) {
+            Vertex topVertex = stackVisitados.pollLast();
+            LinkedList<Vertex> lstNeighborVertex = this.graph.outAdjacenteVertices(topVertex.getLabel()); 
+            
+            if(!lstNeighborVertex.isEmpty()) {
+                if(!stackDFS.contains(topVertex)) {
+                    stackDFS.add(topVertex);
+                }
+                
+                for(Vertex neighbor : lstNeighborVertex) {
+                    if(!stackDFS.contains(neighbor)) {
+                        stackVisitados.add(neighbor);
+                    }
+                }
+            }
+            else {
+                if(!stackDFS.contains(topVertex)) {
+                    stackDFS.add(topVertex);
+                }
+            }
+            
+        }
+ 
+        return stackDFS;
+    }   
 }
