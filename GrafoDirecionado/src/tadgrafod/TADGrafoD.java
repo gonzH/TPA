@@ -35,10 +35,6 @@ public class TADGrafoD {
         this.nome = nome;
     }
 
-    TADGrafoD() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     public void printmat(){
         for(int i = primVertice; i < ultiVertice+1; i++) {
             if(!lstEliminados.contains(i)) {
@@ -231,7 +227,7 @@ public class TADGrafoD {
         return null;
     }
     
-    public Vertex[] endVertices(String labelE){ //???????????????????????????????????????????????????????????????????????????????????????????????
+    public Vertex[] endVertices(String labelE){ 
         Edge oE = (Edge)dicLblEdge.findElement(labelE);
         
         if(dicLblEdge.NO_SUCH_KEY()) {
@@ -473,14 +469,6 @@ public class TADGrafoD {
     
     public Vertex insertVertex(String label, Object dado) {
         int idVertex = geraIDVertex();
-        
-        if(idVertex > ultiVertice) { 
-            ultiVertice = idVertex;
-        }
-        
-        if(idVertex < primVertice) {
-            primVertice = idVertex;
-        }
         
         Vertex v = (Vertex)dicLblVertex.findElement(label);
         

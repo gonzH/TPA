@@ -66,7 +66,7 @@ public class ProcessaGrafo {
         stackVisitados.add(mainVertex);
         
         while(!stackVisitados.isEmpty()) {
-            Vertex topVertex = stackVisitados.pollLast();
+            Vertex topVertex = stackVisitados. pollLast();
             LinkedList<Vertex> lstNeighborVertex = this.graph.outAdjacenteVertices(topVertex.getLabel()); 
             
             if(!lstNeighborVertex.isEmpty()) {
