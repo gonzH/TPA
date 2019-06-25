@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tadgrafod;
+package ifes.bsi.tpa.grafo;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -14,11 +14,11 @@ import java.util.Stack;
  * @author helle
  */
 public class ProcessaGrafo {
-    private TADGrafoD graph;
+    private TADGrafoDV3 graph;
     private LinkedList<Vertex> lstVertexGraph;
     private LinkedList<Edge> lstEdgeGraph;
     
-    public ProcessaGrafo(TADGrafoD graph) {
+    public ProcessaGrafo(TADGrafoDV3 graph) {
         this.graph = graph;
         this.lstVertexGraph = this.graph.vertices();
         this.lstEdgeGraph = this.graph.edges();
@@ -27,7 +27,7 @@ public class ProcessaGrafo {
     
     //FIFO queue
     public LinkedList<Vertex> bfs(String vertexLabel) {
-        Vertex mainVertex = this.graph.getVertice(vertexLabel);
+        Vertex mainVertex = this.graph.getVertex(vertexLabel);
         Queue fila = new LinkedList<Vertex>();
         Queue filaBFS = new LinkedList<Vertex>();
         
@@ -59,7 +59,7 @@ public class ProcessaGrafo {
     }
     
     public LinkedList<Vertex> dfs(String vertexLabelInicial){ 
-        Vertex mainVertex = this.graph.getVertice(vertexLabelInicial);
+        Vertex mainVertex = this.graph.getVertex(vertexLabelInicial);
         LinkedList<Vertex> stackVisitados = new LinkedList<Vertex>();
         LinkedList<Vertex> stackDFS = new LinkedList<Vertex>();
         

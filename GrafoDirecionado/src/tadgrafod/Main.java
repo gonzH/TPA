@@ -5,6 +5,9 @@
  */
 package tadgrafod;
 
+import ifes.bsi.tpa.grafo.ProcessaGrafo;
+import ifes.bsi.tpa.grafo.Vertex;
+import ifes.bsi.tpa.grafo.TADGrafoDV3;
 import java.util.LinkedList;
 
 /**
@@ -16,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
         
         
-        TADGrafoD tadGrafoD = new TADGrafoD("Grafozada");
+        TADGrafoDV3 tadGrafoD = new TADGrafoDV3("Grafozada");
         tadGrafoD.insertVertex("A", 0);
         tadGrafoD.insertVertex("B", 1);
         tadGrafoD.insertVertex("C", 2);
