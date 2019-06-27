@@ -262,9 +262,11 @@ public class GrafBenchmark {
 		System.out.println(CoresConsole.GREEN_BOLD);
 		System.out.println(Comemora.msgSuc2);
 		System.out.println(CoresConsole.RESET);
+                
+                System.out.println(g.numEdges() + "   " + g.numVertices());
 
 		System.out.print("Gerando GraphStream..");
-		ToGStream togs = new ToGStream(g,false,false,false);
+		ToGStream togs = new ToGStream(g,true,true,true);
 		System.out.println("concluído!");		
 		togs.exibe();
 	} /* fim de main */

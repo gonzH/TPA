@@ -5,13 +5,10 @@
  */
 package ifes.bsi.tpa.grafo;
 
-import _my_tools.ArquivoTxt;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -27,10 +24,8 @@ public class TADGrafoDV3 {
     private int quantEdges = 0;
     private int geraIDedge = 1;
     private int geraIDvertice = 0;
-    
     private TADDicChain dicLblVertex = new TADDicChain(null);
     private TADDicChain dicLblEdge = new TADDicChain(null);
-    
     private int primVertice = 0;
     private int ultiVertice = 0;
     //list of deleted vertex
@@ -535,8 +530,7 @@ public class TADGrafoDV3 {
                 } 
             }      
         }
-        
-        /* Anomalia: o arco de label existe mas o seu id não se encontra */
+
         return null;
     }
     
@@ -572,7 +566,7 @@ public class TADGrafoDV3 {
 
         //same structure of the last if conditional but for the last id
         if(idV == ultiVertice) {
-            for(int i = ultiVertice-1; i >= primVertice; i--) {
+            for(int i = ultiVertice-1; i <= primVertice; i--) {
                 if(!lstEliminados.contains(i)) {
                     ultiVertice = i;
                     break;
@@ -665,12 +659,11 @@ public class TADGrafoDV3 {
      *         ao grafo.
      */
     public Vertex insertVertex(String label, Object dado) {
-        int idVertex = geraIDVertex();
-        
         Vertex v = (Vertex)dicLblVertex.findElement(label);
         
         //Including a new vertex
         if(dicLblVertex.NO_SUCH_KEY()) {
+            int idVertex = geraIDVertex();
             v = new Vertex(label, dado);
             v.setId(idVertex);
             dicLblVertex.insertItem(label, v);
