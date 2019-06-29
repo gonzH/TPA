@@ -8,6 +8,7 @@ package ifes.bsi.tpa.grafo;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.lang.Math.*;
+import taddic.TADDicChain;
 /**
  *
  * @author helle
@@ -90,10 +91,11 @@ public class ProcessaGrafo {
         return stackDFS;
     }   
     
-    public int[][] FloydWarshall() {
+    public DSFloydW cmFWarshall() {
         int quantVertex = this.graph.numVertices(); 
         int[][] stdCostMatrix = getStandardCostMatrix();
         int[][] newCostMatrix = new int[quantVertex][quantVertex];
+        TADDicChain dicLabels = dicLabels();
         
         for(int k = 0; k < quantVertex; k++) {
             for(int i = 0; i < quantVertex; i++) {
@@ -106,8 +108,8 @@ public class ProcessaGrafo {
                 }
             }
         }
-        
-        return stdCostMatrix;
+
+        return new DSFloydW(stdCostMatrix, dicLabels);
     }
     
     private int[][] getStandardCostMatrix() {
@@ -141,4 +143,14 @@ public class ProcessaGrafo {
         
         return stdCostMatrix;
     } 
+    
+    private TADDicChain dicLabels() {
+        TADDicChain dic = new TADDicChain(null);
+        
+        for( Vertex v : this.lstVertexGraph) {
+            dic.insertItem(v.getLabel(), v.getId());
+        }
+        
+        return dic;
+    }
 }

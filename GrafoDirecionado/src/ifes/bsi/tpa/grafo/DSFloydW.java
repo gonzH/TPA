@@ -14,10 +14,11 @@ import taddic.TADDicChain;
  */
 public class DSFloydW extends DataSet {
     private int[][] mat_custos;
-    private TADDicChain dic_vertex_label_int = null;
+    private TADDicChain dic_vertex_label_int = new TADDicChain(null);
 
-    public DSFloydW (int[][] mat_custos) {
+    public DSFloydW (int[][] mat_custos, TADDicChain dic) {
         this.mat_custos = mat_custos;
+        this.dic_vertex_label_int = dic;
     }
 
     @Override
@@ -28,6 +29,9 @@ public class DSFloydW extends DataSet {
 
     @Override
     public int custo (String origem, String destino) {
-        return 0;
+        int idLine = (int) dic_vertex_label_int.findElement(origem);
+        int idColumn =(int) dic_vertex_label_int.findElement(destino);
+        
+        return mat_custos[idLine][idColumn];
     }
 }

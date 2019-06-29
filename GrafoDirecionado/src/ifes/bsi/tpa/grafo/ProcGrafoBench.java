@@ -23,17 +23,17 @@ public class ProcGrafoBench {
 
             ProcessaGrafo pg = new ProcessaGrafo(g);
 
-            int[][] fwm = pg.FloydWarshall();
+//            int[][] fwm = pg.cmFWarshall();
+//            
+//            for(int i = 0; i < fwm.length; i++) {
+//                for(int j = 0; j < fwm.length; j++) {
+//                    System.out.print(String.format("%d ", fwm[i][j]));
+//                }
+//                System.out.println("");
+//            }
             
-            for(int i = 0; i < fwm.length; i++) {
-                for(int j = 0; j < fwm.length; j++) {
-                    System.out.print(String.format("%d ", fwm[i][j]));
-                }
-                System.out.println("");
-            }
-            
-            DSFloydW dsfw = new DSFloydW(fwm);
-            
+            DSFloydW dsfw = pg.cmFWarshall();
+            System.out.println(dsfw.custo("A", "C"));
             
 			
 	} /* fim de main */

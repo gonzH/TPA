@@ -4,9 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/ifes/bsi/tpa/grafo/TADGrafoDV3.java</file>
+            <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/ifes/bsi/tpa/grafo/ProcGrafoBench.java</file>
+            <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/taddic/TADDicChain.java</file>
             <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/tadgrafod/Main.java</file>
+            <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/tadgrafod/NewClass.java</file>
+            <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/ifes/bsi/tpa/grafo/ProcessaGrafo.java</file>
             <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/ifes/bsi/tpa/grafo/ToGStream.java</file>
+            <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/ifes/bsi/tpa/grafo/DataSet.java</file>
             <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/ifes/bsi/tpa/grafo/GrafBenchmark.java</file>
+            <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/ifes/bsi/tpa/grafo/DSDijkstra.java</file>
+            <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/ifes/bsi/tpa/grafo/DSFloydW.java</file>
+            <file>file:/F:/GitDesktop/TPA/GrafoDirecionado/src/ifes/bsi/tpa/grafo/Edge.java</file>
         </group>
     </open-files>
 </project-private>
