@@ -13,6 +13,7 @@ public class Edge {
     private int id;
     private String label;
     private Object dado;
+    private int custo = 0;
     
     public Edge(String label, Object dado){
         this.label = label;
@@ -41,6 +42,14 @@ public class Edge {
 
     public void setDado(Object dado) {
         this.dado = dado;
+    }
+
+    public int getCusto() {
+        return custo;
+    }
+
+    public void setCusto(int custo) {
+        this.custo = custo;
     }
     
     

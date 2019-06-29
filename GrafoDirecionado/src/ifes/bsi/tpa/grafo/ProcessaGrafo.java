@@ -7,8 +7,7 @@ package ifes.bsi.tpa.grafo;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
-
+import java.lang.Math.*;
 /**
  *
  * @author helle
@@ -90,4 +89,56 @@ public class ProcessaGrafo {
  
         return stackDFS;
     }   
+    
+    public int[][] FloydWarshall() {
+        int quantVertex = this.graph.numVertices(); 
+        int[][] stdCostMatrix = getStandardCostMatrix();
+        int[][] newCostMatrix = new int[quantVertex][quantVertex];
+        
+        for(int k = 0; k < quantVertex; k++) {
+            for(int i = 0; i < quantVertex; i++) {
+                for(int j = 0; j < quantVertex; j++) {
+                    if(stdCostMatrix[i][k] + stdCostMatrix[k][j] < stdCostMatrix[i][j] && !(stdCostMatrix[i][k] + stdCostMatrix[k][j] < 0)) {
+                        stdCostMatrix[i][j] = stdCostMatrix[i][k] + stdCostMatrix[k][j];
+                        newCostMatrix[i][j] = k;
+                    }
+                    //stdCostMatrix[i][j] = Math.min(stdCostMatrix[i][j], stdCostMatrix[i][k] + stdCostMatrix[k][j]);
+                }
+            }
+        }
+        
+        return stdCostMatrix;
+    }
+    
+    private int[][] getStandardCostMatrix() {
+        int quantVertex = this.graph.numVertices(); 
+        int[][] stdCostMatrix = new int[quantVertex][quantVertex];
+        
+        //checking the relations cost between vertexes of the graph
+        int line = -1;
+        for( Vertex origin : this.lstVertexGraph) {
+            line++;
+            int column = -1;
+            for( Vertex destiny : this.lstVertexGraph) {
+                column++;
+                if(origin.getId() != destiny.getId()) {
+                    Edge e = this.graph.getEdge(origin.getLabel(), destiny.getLabel());
+                    
+                    if(e != null) {
+                        stdCostMatrix[line][column] = e.getCusto();
+                    }
+                    else {
+                        //represent infinity value of algorithm
+                        stdCostMatrix[line][column] = Integer.MAX_VALUE;
+                    }
+                    
+                }
+                else {
+                    stdCostMatrix[line][column] = 0;
+                }
+            }
+        }
+        
+        return stdCostMatrix;
+    } 
 }
