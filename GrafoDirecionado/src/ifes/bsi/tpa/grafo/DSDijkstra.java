@@ -31,5 +31,15 @@ public class DSDijkstra extends DataSet{
         return 0;
     }
 
+    public int[] getVet_custos() {
+        return vet_custos;
+    }
+
+    public String[] getVet_antecessores() {
+        return vet_antecessores;
+    }
+    
+    
+
 
 }

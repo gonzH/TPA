@@ -34,4 +34,14 @@ public class DSFloydW extends DataSet {
         
         return mat_custos[idLine][idColumn];
     }
+
+    public int[][] getMat_custos() {
+        return mat_custos;
+    }
+
+    public TADDicChain getDic_vertex_label_int() {
+        return dic_vertex_label_int;
+    }
+    
+    
 }

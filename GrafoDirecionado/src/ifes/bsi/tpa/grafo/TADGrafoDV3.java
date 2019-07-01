@@ -95,6 +95,7 @@ public class TADGrafoDV3 {
                 if(!lstEliminados.contains(i)) {
                     for(int j = 0; j < lstVs.size(); j++) {
                         v = (Vertex)dicLblVertex.findElement(lstVs.get(j));
+                        
                         if(v.getId() == i) {
                             labelOrigem = v.getLabel();
                             break;
@@ -105,6 +106,7 @@ public class TADGrafoDV3 {
                         if(!lstEliminados.contains(k)) {
                             for(int m = 0; m < lstVs.size(); m++) {
                                 v = (Vertex)dicLblVertex.findElement(lstVs.get(m));
+                                
                                 if(v.getId() == k) {
                                     labelDestino = v.getLabel();
                                     break;
@@ -116,6 +118,7 @@ public class TADGrafoDV3 {
                             if(idEdge != 0) {
                                 for(int m = 0; m < lstEs.size(); m++) {
                                     e = (Edge)dicLblEdge.findElement(lstEs.get(m));
+                                    
                                     if(e.getId() == idEdge) {
                                         labelEdge = e.getLabel();
                                         break;

@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.lang.Math.*;
 import taddic.TADDicChain;
+import taddic.TDicItem;
 /**
  *
  * @author helle
@@ -66,7 +67,7 @@ public class ProcessaGrafo {
         stackVisitados.add(mainVertex);
         
         while(!stackVisitados.isEmpty()) {
-            Vertex topVertex = stackVisitados. pollLast();
+            Vertex topVertex = stackVisitados.pollLast();
             LinkedList<Vertex> lstNeighborVertex = this.graph.outAdjacenteVertices(topVertex.getLabel()); 
             
             if(!lstNeighborVertex.isEmpty()) {
@@ -100,7 +101,7 @@ public class ProcessaGrafo {
         for(int k = 0; k < quantVertex; k++) {
             for(int i = 0; i < quantVertex; i++) {
                 for(int j = 0; j < quantVertex; j++) {
-                    if(stdCostMatrix[i][k] + stdCostMatrix[k][j] < stdCostMatrix[i][j] && !(stdCostMatrix[i][k] + stdCostMatrix[k][j] < 0)) {
+                    if(stdCostMatrix[i][k] + stdCostMatrix[k][j] < stdCostMatrix[i][j] && (stdCostMatrix[i][k] != Integer.MAX_VALUE && stdCostMatrix[k][j] != Integer.MAX_VALUE )) {
                         stdCostMatrix[i][j] = stdCostMatrix[i][k] + stdCostMatrix[k][j];
                         newCostMatrix[i][j] = k;
                     }
@@ -111,6 +112,76 @@ public class ProcessaGrafo {
 
         return new DSFloydW(stdCostMatrix, dicLabels);
     }
+    
+    public DSDijkstra cmDijkstra(String origem) {
+        Vertex originVertex = this.graph.getVertex(origem);
+        int pos = originVertex.getId(); //position of origin vertex important due vertex and edge match
+        LinkedList<Vertex> lstVertex = this.lstVertexGraph;
+        
+        int quantVertex = this.graph.numVertices();
+        int[] weight = new int[quantVertex];
+        
+        String[] path = new String[quantVertex];
+        LinkedList<Integer> neighbors = new LinkedList<>();
+        
+        for(int i = 0; i < quantVertex; i++) {
+            weight[i] = Integer.MAX_VALUE;
+            neighbors.add(i);
+        }
+        
+        //setting up origin
+        weight[pos] = 0;
+        path[pos] = originVertex.getLabel();
+        
+        while(!neighbors.isEmpty()) {
+            neighbors.remove((Integer)pos);
+            int[] weighClone = weight.clone();
+            String[] pathClone = path.clone();
+            LinkedList<Vertex> allNeighbors = this.graph.adjacentVertices(lstVertex.get(pos).getLabel());
+            
+            for(int i = 0; i < allNeighbors.size(); i++) {
+                Vertex neighbor = allNeighbors.get(i);
+                Edge e = this.graph.getEdge(lstVertex.get(pos).getLabel(), neighbor.getLabel());
+                
+                if(e != null && neighbors.contains(neighbor.getId())) {
+                    if(e.getCusto() + weight[pos] < weight[neighbor.getId()]) {
+                        weighClone[neighbor.getId()] = e.getCusto() + weight[pos];
+                        pathClone[neighbor.getId()] = path[pos]+':'+neighbor.getLabel();
+                    }
+                }
+            }
+            
+            weight = weighClone;
+            path = pathClone;
+            
+
+            if(neighbors.size() == 1) {
+                pos = neighbors.get(0);
+            }
+            else if(neighbors.size() > 1) {
+                int minorCost = Integer.MAX_VALUE;
+                int newPos = 0;
+                for(int i = 0; i < weighClone.length; i++) {
+                    if(weighClone[i] < minorCost && neighbors.contains(i)) {
+                        minorCost = weighClone[i];
+                        newPos = i;
+                    }
+                }
+                pos = newPos;
+            }
+        }
+        return new DSDijkstra(weight, path);
+    }
+    
+    public DSDijkstra cmBFord(String origem) {
+        
+        
+        return null;
+    }
+    
+    
+    /* -----------------------------------------------------------------------*/
+    /* aux methods */
     
     private int[][] getStandardCostMatrix() {
         int quantVertex = this.graph.numVertices(); 
@@ -153,4 +224,6 @@ public class ProcessaGrafo {
         
         return dic;
     }
+    
 }
+
